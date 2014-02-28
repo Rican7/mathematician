@@ -1,6 +1,6 @@
 {
     "name": "rican7/mathematician",
-    "description": "A mathematics library for simpler, more reliable math operations even on big numbers",
+    "description": "A PHP mathematics library for simpler, more reliable math operations... even on big numbers",
     "keywords": ["math", "numbers", "integers", "long", "gmp", "bcmath"],
     "license": "MIT",
     "authors": [
