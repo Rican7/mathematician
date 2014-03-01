@@ -58,4 +58,26 @@ abstract class AbstractAdapter implements AdapterInterface
     {
         return $this->toString();
     }
+
+    /**
+     * Upgrade a given parameter to an instance
+     * of the current adapter
+     *
+     * This enables methods to more easily allow
+     * loose arguments to their mathematic methods
+     * while keeping each method body DRY
+     *
+     * @param mixed $number
+     * @static
+     * @access protected
+     * @return static
+     */
+    protected static function upgradeParam($number)
+    {
+        if ($number instanceof static) {
+            return $number;
+        }
+
+        return static::factory($number);
+    }
 }
