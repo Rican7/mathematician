@@ -91,7 +91,8 @@ class Gmp extends AbstractAdapter implements AdapterInterface
         // The PHP "gmp" extension doesn't support floats :/
         if (is_float($number)) {
             throw new InvalidTypeException(
-                'Attempt to build a '. get_class($this) .' instance with a float value: '. $number
+                'The GMP extension doesn\'t support float values.'
+                .' Attempt to build a '. get_class($this) .' instance with a float value: '. $number
             );
         } elseif (static::isGmpResource($number)) {
             $this->raw_value = $number;
@@ -105,6 +106,75 @@ class Gmp extends AbstractAdapter implements AdapterInterface
                 'GMP failed to initialize correctly with your value: '. $number
             );
         }
+    }
+
+    /**
+     * Add numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function add($number)
+    {
+        $result = gmp_add(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Subtract numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function sub($number)
+    {
+        $result = gmp_sub(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Multiply numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mul($number)
+    {
+        $result = gmp_mul(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Divide numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function div($number)
+    {
+        $result = gmp_div(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue(),
+            GMP_ROUND_ZERO
+        );
+
+        return static::factory($result);
     }
 
     /**
