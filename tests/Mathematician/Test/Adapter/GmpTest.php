@@ -181,6 +181,62 @@ class GmpTest extends AbstractMathematicianTest
         $this->assertSame($loop_count, count($numbers));
     }
 
+    public function testAdd()
+    {
+        $gmp_a = new Gmp(100);
+
+        // Positive arg and result
+        $this->assertSame('102', $gmp_a->add(2)->toString());
+
+        // Negative arg and positive result
+        $this->assertSame('98', $gmp_a->add(-2)->toString());
+
+        // Negative arg and result
+        $this->assertSame('-50', $gmp_a->add(-150)->toString());
+
+        // Zero arg
+        $this->assertSame('100', $gmp_a->add(0)->toString());
+    }
+
+    public function testSub()
+    {
+        $gmp_a = new Gmp(100);
+
+        // Positive arg and result
+        $this->assertSame('98', $gmp_a->sub(2)->toString());
+
+        // Negative arg and positive result
+        $this->assertSame('102', $gmp_a->sub(-2)->toString());
+
+        // Zero arg
+        $this->assertSame('100', $gmp_a->sub(0)->toString());
+    }
+
+    public function testMul()
+    {
+        $gmp_a = new Gmp(2);
+
+        // Positive arg and result
+        $this->assertSame('4', $gmp_a->mul(2)->toString());
+
+        // Negative arg and result
+        $this->assertSame('-20', $gmp_a->mul(-10)->toString());
+
+        // Zero arg
+        $this->assertSame('0', $gmp_a->mul(0)->toString());
+    }
+
+    public function testDiv()
+    {
+        $gmp_a = new Gmp(20);
+
+        // Positive arg and result
+        $this->assertSame('10', $gmp_a->div(2)->toString());
+
+        // Negative arg and result
+        $this->assertSame('-10', $gmp_a->div(-2)->toString());
+    }
+
     /**
      * @dataProvider gmpProvider
      */
