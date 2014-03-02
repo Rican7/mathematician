@@ -10,6 +10,7 @@
 
 namespace Mathematician\Test\Adapter;
 
+use Exception;
 use Mathematician\Adapter\Gmp;
 use Mathematician\Test\AbstractMathematicianTest;
 
@@ -25,6 +26,15 @@ class GmpTest extends AbstractMathematicianTest
     protected function getTestGmpNumber()
     {
         return new Gmp(PHP_INT_MAX);
+    }
+
+    public function gmpProvider()
+    {
+        return array(
+            array('18446744073709551616', new Gmp('18446744073709551616')),
+            array('-1', new Gmp('-1')),
+            array('4564564', new Gmp('4564564')),
+        );
     }
 
     public function testIsGmpResource()
@@ -81,16 +91,101 @@ class GmpTest extends AbstractMathematicianTest
         $gmp = new Gmp('doge');
     }
 
-    public function testToString()
+    /**
+     * @dataProvider gmpProvider
+     */
+    public function testToString($string, $instance)
     {
-        $gmps = array(
-            '18446744073709551616' => new Gmp('18446744073709551616'),
-            '-1' => new Gmp('-1'),
-            '4564564' => new Gmp('4564564'),
+        $this->assertSame($string, $instance->toString());
+    }
+
+    public function testMethodsAcceptLooseNumericArguments()
+    {
+        // Our test number arguments
+        $numbers = array(
+            5, // int
+            -5, // negative integer
+            '18446744073709551618', // Big int String
+            new Gmp(5), // Another instance
+            gmp_init(5), // A gmp resource
         );
 
-        foreach ($gmps as $string => $gmp) {
-            $this->assertSame((string) $string, $gmp->toString());
+        // Our instance
+        $gmp = new Gmp(5);
+
+        // Make sure we actually loop through each arg
+        $loop_count = 0;
+
+        foreach ($numbers as $num_arg) {
+            // Create an assertion for each method
+            // able to take a loose argument here
+
+            $this->assertTrue($gmp->add($num_arg) instanceof Gmp);
+            $this->assertTrue($gmp->sub($num_arg) instanceof Gmp);
+            $this->assertTrue($gmp->mul($num_arg) instanceof Gmp);
+            $this->assertTrue($gmp->div($num_arg) instanceof Gmp);
+
+            $loop_count++;
         }
+
+        $this->assertSame($loop_count, count($numbers));
+    }
+
+    public function testMethodsFailsWithBadArguments()
+    {
+        // Our test number arguments
+        $numbers = array(
+            1.2, // float
+            -1.2, // negative float
+            '1.2', // float string
+            'doge', // non-numeric string
+        );
+
+        // Our instance
+        $gmp = new Gmp(5);
+
+        // Make sure we actually loop through each arg
+        $loop_count = 0;
+
+        foreach ($numbers as $num_arg) {
+            // Create an assertion for each method
+            // able to take a loose argument here
+
+            try {
+                $gmp->add($num_arg);
+                $this->assertFalse(true);
+            } catch (Exception $e) {
+            }
+
+            try {
+                $gmp->sub($num_arg);
+                $this->assertFalse(true);
+            } catch (Exception $e) {
+            }
+
+            try {
+                $gmp->mul($num_arg);
+                $this->assertFalse(true);
+            } catch (Exception $e) {
+            }
+
+            try {
+                $gmp->div($num_arg);
+                $this->assertFalse(true);
+            } catch (Exception $e) {
+            }
+
+            $loop_count++;
+        }
+
+        $this->assertSame($loop_count, count($numbers));
+    }
+
+    /**
+     * @dataProvider gmpProvider
+     */
+    public function testToStringMagic($string, $instance)
+    {
+        $this->assertSame($string, (string) $instance);
     }
 }
