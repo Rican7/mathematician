@@ -45,6 +45,42 @@ interface AdapterInterface
      */
     public function toString();
 
+    /**
+     * Add numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function add($number);
+
+    /**
+     * Subtract numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function sub($number);
+
+    /**
+     * Multiply numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mul($number);
+
+    /**
+     * Divide numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function div($number);
+
 
     /**
      * Magic Methods
