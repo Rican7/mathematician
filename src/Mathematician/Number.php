@@ -10,9 +10,9 @@
 
 namespace Mathematician;
 
-use Mathematician\Adapter\AdapterInterface;
-use Mathematician\Adapter\BcMath;
-use Mathematician\Adapter\Gmp;
+use Mathematician\Integer\Adapter\AdapterInterface;
+use Mathematician\Integer\Adapter\BcMath;
+use Mathematician\Integer\Adapter\Gmp;
 use Mathematician\Exception\AdapterSupportException;
 
 /**

@@ -8,7 +8,7 @@
  * @version     0.1.0
  */
 
-namespace Mathematician\Adapter;
+namespace Mathematician\Integer\Adapter;
 
 use Mathematician\Exception\InvalidNumberException;
 use Mathematician\Exception\InvalidPrecisionException;
@@ -19,7 +19,7 @@ use Mathematician\Exception\InvalidTypeException;
  *
  * @uses AbstractAdapter
  * @uses AdapterInterface
- * @package Mathematician\Adapter
+ * @package Mathematician\Integer\Adapter
  */
 class Gmp extends AbstractAdapter implements AdapterInterface
 {

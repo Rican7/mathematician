@@ -8,14 +8,14 @@
  * @version     0.1.0
  */
 
-namespace Mathematician\Adapter;
+namespace Mathematician\Integer\Adapter;
 
 /**
  * AbstractAdapter
  *
  * @uses AdapterInterface
  * @abstract
- * @package Mathematician\Adapter
+ * @package Mathematician\Integer\Adapter
  */
 abstract class AbstractAdapter implements AdapterInterface
 {

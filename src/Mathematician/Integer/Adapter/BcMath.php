@@ -8,14 +8,14 @@
  * @version     0.1.0
  */
 
-namespace Mathematician\Adapter;
+namespace Mathematician\Integer\Adapter;
 
 /**
  * BcMath
  *
  * @uses AbstractAdapter
  * @uses AdapterInterface
- * @package Mathematician\Adapter
+ * @package Mathematician\Integer\Adapter
  */
 class BcMath extends AbstractAdapter implements AdapterInterface
 {

@@ -8,10 +8,10 @@
  * @version     0.1.0
  */
 
-namespace Mathematician\Test\Adapter;
+namespace Mathematician\Test\Integer\Adapter;
 
 use Exception;
-use Mathematician\Adapter\Gmp;
+use Mathematician\Integer\Adapter\Gmp;
 use Mathematician\Test\AbstractMathematicianTest;
 
 /**

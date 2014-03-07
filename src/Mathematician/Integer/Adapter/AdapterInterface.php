@@ -8,12 +8,12 @@
  * @version     0.1.0
  */
 
-namespace Mathematician\Adapter;
+namespace Mathematician\Integer\Adapter;
 
 /**
  * AdapterInterface
  *
- * @package Mathematician\Adapter
+ * @package Mathematician\Integer\Adapter
  */
 interface AdapterInterface
 {
