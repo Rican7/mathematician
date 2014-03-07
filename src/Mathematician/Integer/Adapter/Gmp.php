@@ -44,20 +44,14 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      * Create an instance of a number adapter
      *
      * @param mixed $number
-     * @param int $scale
+     * @param int $radix
      * @static
      * @access public
      * @return self
      */
-    public static function factory($number, $scale = null)
+    public static function factory($number, $radix = null)
     {
-        if (null !== $scale && ((int) $scale) != 0) {
-            throw new InvalidPrecisionException(
-                'The GMP extension doesn\'t support float/decimal calculations'
-            );
-        }
-
-        return new static($number);
+        return new static($number, $radix);
     }
 
     /**
@@ -83,10 +77,10 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      * Constructor
      *
      * @param mixed $number
-     * @param int $base
+     * @param int $radix
      * @access public
      */
-    public function __construct($number, $base = 0)
+    public function __construct($number, $radix = 0)
     {
         // The PHP "gmp" extension doesn't support floats :/
         if (is_float($number)) {
@@ -97,7 +91,7 @@ class Gmp extends AbstractAdapter implements AdapterInterface
         } elseif (static::isGmpResource($number)) {
             $this->raw_value = $number;
         } else {
-            $this->raw_value = gmp_init($number, (int) $base);
+            $this->raw_value = gmp_init($number, (int) $radix);
         }
 
         // Verify the value actually makes sense

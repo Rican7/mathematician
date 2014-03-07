@@ -21,13 +21,13 @@ interface AdapterInterface
     /**
      * Create an instance of a number adapter
      *
-     * @param mixed $number
-     * @param int $scale
+     * @param mixed $number The actual numeric value
+     * @param int $radix    The "base" of the number system represented by $number
      * @static
      * @access public
      * @return self
      */
-    public static function factory($number, $scale = 0);
+    public static function factory($number, $radix = 0);
 
     /**
      * Get the raw value
