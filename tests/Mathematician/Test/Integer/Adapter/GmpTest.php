@@ -53,14 +53,6 @@ class GmpTest extends AbstractMathematicianTest
         $this->assertTrue(Gmp::factory(PHP_INT_MAX) instanceof Gmp);
     }
 
-    /**
-     * @expectedException Mathematician\Exception\InvalidPrecisionException
-     */
-    public function testFactoryFailsWithAGivenScale()
-    {
-        Gmp::factory(PHP_INT_MAX, 2);
-    }
-
     public function testConstructor()
     {
         $gmp = new Gmp(PHP_INT_MAX);
