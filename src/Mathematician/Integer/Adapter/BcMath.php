@@ -19,4 +19,129 @@ namespace Mathematician\Integer\Adapter;
  */
 class BcMath extends AbstractAdapter implements AdapterInterface
 {
+
+    /**
+     * Constants
+     */
+
+    /**
+     * The default "scale" to use for bcmath functions
+     *
+     * @const int
+     */
+    const DEFAULT_SCALE = 0;
+
+
+    /**
+     * Methods
+     */
+
+    /**
+     * Create an instance of a number adapter
+     *
+     * @param mixed $number
+     * @param int $radix
+     * @static
+     * @access public
+     * @return self
+     */
+    public static function factory($number, $radix = null)
+    {
+        return new static($number);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param mixed $number
+     * @access public
+     */
+    public function __construct($number)
+    {
+        // Convert the value to our scale by simply adding 0
+        $this->raw_value = bcadd($number, 0, static::DEFAULT_SCALE);
+    }
+
+    /**
+     * Add numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function add($number)
+    {
+        $result = bcadd(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Subtract numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function sub($number)
+    {
+        $result = bcsub(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Multiply numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mul($number)
+    {
+        $result = bcmul(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Divide numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function div($number)
+    {
+        $result = bcdiv(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Get a string representation of the number
+     *
+     * @access public
+     * @return string
+     */
+    public function toString()
+    {
+        return (string) $this->raw_value;
+    }
 }
