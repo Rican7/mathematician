@@ -172,6 +172,74 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Raise to a power
+     *
+     * @param mixed $power
+     * @access public
+     * @return self
+     */
+    public function pow($power)
+    {
+        $result = gmp_pow(
+            $this->getRawValue(),
+            static::upgradeParam($power)->toString()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Raise to a power and reduce by a modulus
+     *
+     * @param mixed $power
+     * @param mixed $modulus
+     * @access public
+     * @return self
+     */
+    public function powMod($power, $modulus)
+    {
+        $result = gmp_powm(
+            $this->getRawValue(),
+            static::upgradeParam($power)->getRawValue(),
+            static::upgradeParam($modulus)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Get the square route
+     *
+     * @access public
+     * @return self
+     */
+    public function sqrt()
+    {
+        $result = gmp_sqrt(
+            $this->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Get the modulus
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mod($number)
+    {
+        $result = gmp_mod(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
      * Get a string representation of the number
      *
      * @access public

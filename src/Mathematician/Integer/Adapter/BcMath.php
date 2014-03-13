@@ -135,6 +135,77 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Raise to a power
+     *
+     * @param mixed $power
+     * @access public
+     * @return self
+     */
+    public function pow($power)
+    {
+        $result = bcpow(
+            $this->getRawValue(),
+            static::upgradeParam($power)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Raise to a power and reduce by a modulus
+     *
+     * @param mixed $power
+     * @param mixed $modulus
+     * @access public
+     * @return self
+     */
+    public function powMod($power, $modulus)
+    {
+        $result = bcpowmod(
+            $this->getRawValue(),
+            static::upgradeParam($power)->getRawValue(),
+            static::upgradeParam($modulus)->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Get the square route
+     *
+     * @access public
+     * @return self
+     */
+    public function sqrt()
+    {
+        $result = bcsqrt(
+            $this->getRawValue(),
+            static::DEFAULT_SCALE
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Get the modulus
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mod($number)
+    {
+        $result = bcmod(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
      * Get a string representation of the number
      *
      * @access public
