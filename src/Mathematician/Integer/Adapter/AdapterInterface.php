@@ -81,6 +81,42 @@ interface AdapterInterface
      */
     public function div($number);
 
+    /**
+     * Raise to a power
+     *
+     * @param mixed $power
+     * @access public
+     * @return self
+     */
+    public function pow($power);
+
+    /**
+     * Raise to a power and reduce by a modulus
+     *
+     * @param mixed $power
+     * @param mixed $modulus
+     * @access public
+     * @return self
+     */
+    public function powMod($power, $modulus);
+
+    /**
+     * Get the square route
+     *
+     * @access public
+     * @return self
+     */
+    public function sqrt();
+
+    /**
+     * Get the modulus
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function mod($number);
+
 
     /**
      * Magic Methods
