@@ -205,6 +205,53 @@ class BcMathTest extends AbstractMathematicianTest
         $this->assertSame('-10', $bcmath_a->div(-2)->toString());
     }
 
+    public function testPow()
+    {
+        $bcmath_a = new BcMath(2);
+
+        // Positive arg and result
+        $this->assertSame('256', $bcmath_a->pow(8)->toString());
+
+        // Negative arg and zero result
+        $this->assertSame('0', $bcmath_a->pow(-2)->toString());
+
+        // Zero arg
+        $this->assertSame('1', $bcmath_a->pow(0)->toString());
+    }
+
+    public function testPowMod()
+    {
+        $bcmath_a = new BcMath(2);
+
+        // Positive arg and result
+        $this->assertSame('6', $bcmath_a->powMod(8, 10)->toString());
+
+        // Negative arg and zero result
+        $this->assertSame('0', $bcmath_a->powMod(-2, 10)->toString());
+
+        // Zero arg
+        $this->assertSame('0', $bcmath_a->powMod(0, 0)->toString());
+    }
+
+    public function testSqrt()
+    {
+        $bcmath_a = new BcMath(256);
+
+        // Positive arg and result
+        $this->assertSame('16', $bcmath_a->sqrt()->toString());
+    }
+
+    public function testMod()
+    {
+        $bcmath_a = new BcMath(256);
+
+        // Positive arg and result
+        $this->assertSame('6', $bcmath_a->mod(10)->toString());
+
+        // Negative arg and zero result
+        $this->assertSame('0', $bcmath_a->mod(-2)->toString());
+    }
+
     /**
      * @dataProvider bcmathProvider
      */

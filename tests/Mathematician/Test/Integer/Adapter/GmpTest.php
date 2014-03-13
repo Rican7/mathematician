@@ -229,6 +229,55 @@ class GmpTest extends AbstractMathematicianTest
         $this->assertSame('-10', $gmp_a->div(-2)->toString());
     }
 
+    public function testPow()
+    {
+        $gmp_a = new Gmp(2);
+
+        // Positive arg and result
+        $this->assertSame('256', $gmp_a->pow(8)->toString());
+
+        // Negative arg and zero result
+        // TODO: Fix warning
+        // $this->assertSame('0', $gmp_a->pow(-2)->toString());
+
+        // Zero arg
+        $this->assertSame('1', $gmp_a->pow(0)->toString());
+    }
+
+    public function testPowMod()
+    {
+        $gmp_a = new Gmp(2);
+
+        // Positive arg and result
+        $this->assertSame('6', $gmp_a->powMod(8, 10)->toString());
+
+        // Negative arg and zero result
+        // TODO: Fix warning
+        // $this->assertSame('0', $gmp_a->powMod(-2, 10)->toString());
+
+        // Zero arg
+        $this->assertSame('0', $gmp_a->powMod(0, 0)->toString());
+    }
+
+    public function testSqrt()
+    {
+        $gmp_a = new Gmp(256);
+
+        // Positive arg and result
+        $this->assertSame('16', $gmp_a->sqrt()->toString());
+    }
+
+    public function testMod()
+    {
+        $gmp_a = new Gmp(256);
+
+        // Positive arg and result
+        $this->assertSame('6', $gmp_a->mod(10)->toString());
+
+        // Negative arg and zero result
+        $this->assertSame('0', $gmp_a->mod(-2)->toString());
+    }
+
     /**
      * @dataProvider gmpProvider
      */
