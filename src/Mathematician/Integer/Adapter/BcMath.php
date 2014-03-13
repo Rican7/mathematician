@@ -63,6 +63,21 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Compare numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return int
+     */
+    public function compareTo($number)
+    {
+        return bccomp(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+    }
+
+    /**
      * Add numbers
      *
      * @param mixed $number
