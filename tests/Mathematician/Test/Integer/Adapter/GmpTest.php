@@ -173,6 +173,20 @@ class GmpTest extends AbstractMathematicianTest
         $this->assertSame($loop_count, count($numbers));
     }
 
+    public function testCompareTo()
+    {
+        $gmp_a = new Gmp(256);
+
+        // Equals
+        $this->assertSame(0, $gmp_a->compareTo(256));
+
+        // Less
+        $this->assertLessThan(0, $gmp_a->compareTo(300));
+
+        // Greater
+        $this->assertGreaterThan(0, $gmp_a->compareTo(100));
+    }
+
     public function testAdd()
     {
         $gmp_a = new Gmp(100);

@@ -149,6 +149,20 @@ class BcMathTest extends AbstractMathematicianTest
         $this->assertSame($loop_count, count($numbers));
     }
 
+    public function testCompareTo()
+    {
+        $bcmath_a = new BcMath(256);
+
+        // Equals
+        $this->assertSame(0, $bcmath_a->compareTo(256));
+
+        // Less
+        $this->assertLessThan(0, $bcmath_a->compareTo(300));
+
+        // Greater
+        $this->assertGreaterThan(0, $bcmath_a->compareTo(100));
+    }
+
     public function testAdd()
     {
         $bcmath_a = new BcMath(100);
