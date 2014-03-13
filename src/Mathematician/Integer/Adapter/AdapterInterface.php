@@ -46,6 +46,15 @@ interface AdapterInterface
     public function toString();
 
     /**
+     * Compare numbers
+     *
+     * @param mixed $number
+     * @access public
+     * @return int
+     */
+    public function compareTo($number);
+
+    /**
      * Add numbers
      *
      * @param mixed $number
