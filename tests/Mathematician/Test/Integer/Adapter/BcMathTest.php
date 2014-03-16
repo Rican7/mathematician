@@ -270,7 +270,7 @@ class BcMathTest extends AbstractMathematicianTest
     {
         $decimal_integer = '1234567890';
 
-        $test_conversion_map = [
+        $test_conversion_map = array(
             2 => '1001001100101100000001011010010',
             3 => '10012001001112202200',
             8 => '11145401322',
@@ -280,7 +280,7 @@ class BcMathTest extends AbstractMathematicianTest
             37 => 'HTR1PR', // After base36, the chars should uppercase
             48 => '4eRCaI',
             62 => '1LY7VK',
-        ];
+        );
 
         $bc_math = new BcMath($decimal_integer);
 
