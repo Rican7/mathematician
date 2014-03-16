@@ -31,6 +31,13 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     const DEFAULT_SCALE = 0;
 
+    /**
+     * The numeric alphabet used when representing numbers as strings
+     *
+     * @const string
+     */
+    const NUMERIC_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
 
     /**
      * Methods
@@ -229,5 +236,31 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     public function toString()
     {
         return (string) $this->raw_value;
+    }
+
+    /**
+     * Get the numeric alphabet to use for string representation of a given base
+     *
+     * @param int $base
+     * @static
+     * @access protected
+	 * @throws OutOfRangeException If the given base is out of our alphabet's range
+     * @return string
+     */
+    protected static function getNumericAlphabetForBase($base)
+    {
+        if ($base < 2 || $base > strlen(static::NUMERIC_ALPHABET)) {
+            throw new OutOfRangeException(
+                'Given base "'. $base .'" is out of range: 2..'. strlen(static::NUMERIC_ALPHABET)
+            );
+        }
+
+        $alphabet = substr(static::NUMERIC_ALPHABET, 0, $base);
+
+        if ($base <= 36) {
+            $alphabet = strtolower($alphabet);
+        }
+
+        return $alphabet;
     }
 }
