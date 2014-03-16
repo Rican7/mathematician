@@ -230,11 +230,20 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     /**
      * Get a string representation of the number
      *
+     * @param int $radix
      * @access public
      * @return string
      */
-    public function toString()
+    public function toString($radix = 10)
     {
+        // Don't bother converting what we're already representing
+        if ($radix !== 10) {
+            return static::decToBase(
+                $this->getRawValue(),
+                $radix
+            );
+        }
+
         return (string) $this->raw_value;
     }
 
@@ -262,5 +271,33 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         }
 
         return $alphabet;
+    }
+
+    /**
+     * Convert a numeric string from decimal (base 10) form to a given base
+     *
+     * @param string $numeric_string
+     * @param int $to_base
+     * @static
+     * @access protected
+     * @return string
+     */
+    protected static function decToBase($numeric_string, $to_base)
+    {
+        // Get the alphabet to use
+        $alphabet = static::getNumericAlphabetForBase($to_base);
+
+        $converted = '';
+
+        // Loop until our original argument is 0
+        while (0 !== bccomp($numeric_string, 0, static::DEFAULT_SCALE)) {
+            // Reduce our numeric string by our base and grab its remainder
+            $remainder = bcmod($numeric_string, $to_base);
+            $numeric_string = bcdiv($numeric_string, $to_base, static::DEFAULT_SCALE);
+
+            $converted = $alphabet[$remainder] . $converted;
+        }
+
+        return (string) $converted;
     }
 }
