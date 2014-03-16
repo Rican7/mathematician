@@ -257,11 +257,12 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     /**
      * Get a string representation of the number
      *
+     * @param int $radix
      * @access public
      * @return string
      */
-    public function toString()
+    public function toString($radix = 10)
     {
-        return gmp_strval($this->raw_value);
+        return gmp_strval($this->raw_value, $radix);
     }
 }

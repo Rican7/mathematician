@@ -40,10 +40,11 @@ interface AdapterInterface
     /**
      * Get a string representation of the number
      *
+     * @param int $radix
      * @access public
      * @return string
      */
-    public function toString();
+    public function toString($radix = 10);
 
     /**
      * Compare numbers
