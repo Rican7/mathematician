@@ -61,10 +61,17 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      * Constructor
      *
      * @param mixed $number
+     * @param int $radix
      * @access public
      */
-    public function __construct($number)
+    public function __construct($number, $radix = 10)
     {
+        // Don't bother converting if we're already in our required radix
+        if ($radix !== 10) {
+            // First convert our value to a base 10 string
+            $number = static::baseToDec($number, $radix);
+        }
+
         // Convert the value to our scale by simply adding 0
         $this->raw_value = bcadd($number, 0, static::DEFAULT_SCALE);
     }
@@ -296,6 +303,41 @@ class BcMath extends AbstractAdapter implements AdapterInterface
             $numeric_string = bcdiv($numeric_string, $to_base, static::DEFAULT_SCALE);
 
             $converted = $alphabet[$remainder] . $converted;
+        }
+
+        return (string) $converted;
+    }
+
+    /**
+     * Convert a numeric string from a given base to decimal (base 10) form
+     *
+     * @param string $numeric_string
+     * @param int $from_base
+     * @static
+     * @access protected
+     * @return string
+     */
+    protected static function baseToDec($numeric_string, $from_base)
+    {
+        // Get the alphabet to use
+        $alphabet = static::getNumericAlphabetForBase($from_base);
+
+        // Make sure our incoming value aligns with our alphabet's standard
+        if ($from_base <= 36) {
+            $numeric_string = strtolower($numeric_string);
+        }
+
+        $converted = '';
+        $string_length = strlen($numeric_string);
+
+        // Loop until our original argument is 0
+        foreach (str_split($numeric_string) as $index => $digit) {
+            $char = strpos($alphabet, $digit);
+            $exponent = ($string_length - ($index + 1));
+            $power = bcpow($from_base, $exponent, static::DEFAULT_SCALE);
+            $raised = bcmul($char, $power, static::DEFAULT_SCALE);
+
+            $converted = bcadd($converted, $raised, static::DEFAULT_SCALE);
         }
 
         return (string) $converted;
