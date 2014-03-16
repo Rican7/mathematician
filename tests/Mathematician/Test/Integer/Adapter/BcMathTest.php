@@ -266,6 +266,29 @@ class BcMathTest extends AbstractMathematicianTest
         $this->assertSame('0', $bcmath_a->mod(-2)->toString());
     }
 
+    public function testToStringBaseConversion()
+    {
+        $decimal_integer = '1234567890';
+
+        $test_conversion_map = [
+            2 => '1001001100101100000001011010010',
+            3 => '10012001001112202200',
+            8 => '11145401322',
+            16 => '499602d2',
+            32 => '14pc0mi',
+            36 => 'kf12oi',
+            37 => 'HTR1PR', // After base36, the chars should uppercase
+            48 => '4eRCaI',
+            62 => '1LY7VK',
+        ];
+
+        $bc_math = new BcMath($decimal_integer);
+
+        foreach ($test_conversion_map as $radix => $string) {
+            $this->assertSame($string, $bc_math->toString($radix));
+        }
+    }
+
     /**
      * @dataProvider bcmathProvider
      */
