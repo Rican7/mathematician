@@ -10,6 +10,8 @@
 
 namespace Mathematician\Integer\Adapter;
 
+use Mathematician\Exception\UnsupportedNumericFormatException;
+
 /**
  * BcMath
  *
@@ -44,6 +46,22 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
 
     /**
+     * Constructor
+     *
+     * This adapter's constructor assumes a radix of 10
+     *
+     * @param mixed $number
+     * @access public
+     */
+    public function __construct($number)
+    {
+        // Convert the value to our scale by simply adding 0
+        $number = bcadd($number, 0, static::DEFAULT_SCALE);
+
+        $this->raw_value = (string) $number;
+    }
+
+    /**
      * Create an instance of a number adapter
      *
      * @param mixed $number
@@ -54,26 +72,22 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public static function factory($number, $radix = null)
     {
-        return new static($number);
-    }
+        if (0 === (int) $radix) {
+            // Attempt to detect our numeric base
+            $radix = static::detectNumericBase($number);
 
-    /**
-     * Constructor
-     *
-     * @param mixed $number
-     * @param int $radix
-     * @access public
-     */
-    public function __construct($number, $radix = 10)
-    {
+            if (0 === $radix) {
+                throw new UnsupportedNumericFormatException();
+            }
+        }
+
         // Don't bother converting if we're already in our required radix
         if ($radix !== 10) {
             // First convert our value to a base 10 string
             $number = static::baseToDec($number, $radix);
         }
 
-        // Convert the value to our scale by simply adding 0
-        $this->raw_value = bcadd($number, 0, static::DEFAULT_SCALE);
+        return new static($number);
     }
 
     /**

@@ -41,6 +41,35 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      */
 
     /**
+     * Constructor
+     *
+     * @param mixed $number
+     * @param int $radix
+     * @access public
+     */
+    public function __construct($number, $radix = 0)
+    {
+        // The PHP "gmp" extension doesn't support floats :/
+        if (is_float($number)) {
+            throw new InvalidTypeException(
+                'The GMP extension doesn\'t support float values.'
+                .' Attempt to build a '. get_class($this) .' instance with a float value: '. $number
+            );
+        } elseif (static::isGmpResource($number)) {
+            $this->raw_value = $number;
+        } else {
+            $this->raw_value = gmp_init($number, (int) $radix);
+        }
+
+        // Verify the value actually makes sense
+        if (false === $this->raw_value) {
+            throw new InvalidNumberException(
+                'GMP failed to initialize correctly with your value: '. $number
+            );
+        }
+    }
+
+    /**
      * Create an instance of a number adapter
      *
      * @param mixed $number
@@ -71,35 +100,6 @@ class Gmp extends AbstractAdapter implements AdapterInterface
         }
 
         return false;
-    }
-
-    /**
-     * Constructor
-     *
-     * @param mixed $number
-     * @param int $radix
-     * @access public
-     */
-    public function __construct($number, $radix = 0)
-    {
-        // The PHP "gmp" extension doesn't support floats :/
-        if (is_float($number)) {
-            throw new InvalidTypeException(
-                'The GMP extension doesn\'t support float values.'
-                .' Attempt to build a '. get_class($this) .' instance with a float value: '. $number
-            );
-        } elseif (static::isGmpResource($number)) {
-            $this->raw_value = $number;
-        } else {
-            $this->raw_value = gmp_init($number, (int) $radix);
-        }
-
-        // Verify the value actually makes sense
-        if (false === $this->raw_value) {
-            throw new InvalidNumberException(
-                'GMP failed to initialize correctly with your value: '. $number
-            );
-        }
     }
 
     /**
