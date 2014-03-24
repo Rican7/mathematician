@@ -41,4 +41,16 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
             array(62, '1LY7VK'),
         );
     }
+
+    public function numberBaseRepresentationProvider()
+    {
+        // All equal to integer: 12345
+        return array(
+            array(2, '0b11000000111001'),
+            array(8, '030071'),
+            array(10, '12345'),
+            array(16, '0x3039'),
+            array(16, '0X3039'),
+        );
+    }
 }

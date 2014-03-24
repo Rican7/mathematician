@@ -24,15 +24,15 @@ class GmpTest extends AbstractAdapterTest
 
     protected function getTestGmpNumber()
     {
-        return new Gmp(PHP_INT_MAX);
+        return Gmp::factory(PHP_INT_MAX);
     }
 
     public function gmpProvider()
     {
         return array(
-            array('18446744073709551616', new Gmp('18446744073709551616')),
-            array('-1', new Gmp('-1')),
-            array('4564564', new Gmp('4564564')),
+            array('18446744073709551616', Gmp::factory('18446744073709551616')),
+            array('-1', Gmp::factory('-1')),
+            array('4564564', Gmp::factory('4564564')),
         );
     }
 
@@ -47,14 +47,9 @@ class GmpTest extends AbstractAdapterTest
         $this->assertFalse(Gmp::isGmpResource(array()));
     }
 
-    public function testFactory()
-    {
-        $this->assertTrue(Gmp::factory(PHP_INT_MAX) instanceof Gmp);
-    }
-
     public function testConstructor()
     {
-        $gmp = new Gmp(PHP_INT_MAX);
+        $gmp = new Gmp(PHP_INT_MAX, 10);
 
         $this->assertTrue($gmp instanceof Gmp);
     }
@@ -91,7 +86,12 @@ class GmpTest extends AbstractAdapterTest
      */
     public function testConstructorWithInvalidNumber()
     {
-        $gmp = new Gmp('doge');
+        $gmp = new Gmp('doge', 10);
+    }
+
+    public function testFactory()
+    {
+        $this->assertTrue(Gmp::factory(PHP_INT_MAX) instanceof Gmp);
     }
 
     /**
@@ -109,12 +109,12 @@ class GmpTest extends AbstractAdapterTest
             5, // int
             -5, // negative integer
             '18446744073709551618', // Big int String
-            new Gmp(5), // Another instance
+            Gmp::factory(5), // Another instance
             gmp_init(5), // A gmp resource
         );
 
         // Our instance
-        $gmp = new Gmp(5);
+        $gmp = Gmp::factory(5);
 
         // Make sure we actually loop through each arg
         $loop_count = 0;
@@ -145,7 +145,7 @@ class GmpTest extends AbstractAdapterTest
         );
 
         // Our instance
-        $gmp = new Gmp(5);
+        $gmp = Gmp::factory(5);
 
         // Make sure we actually loop through each arg
         $loop_count = 0;
@@ -186,7 +186,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testCompareTo()
     {
-        $gmp_a = new Gmp(256);
+        $gmp_a = Gmp::factory(256);
 
         // Equals
         $this->assertSame(0, $gmp_a->compareTo(256));
@@ -200,7 +200,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testAdd()
     {
-        $gmp_a = new Gmp(100);
+        $gmp_a = Gmp::factory(100);
 
         // Positive arg and result
         $this->assertSame('102', $gmp_a->add(2)->toString());
@@ -217,7 +217,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testSub()
     {
-        $gmp_a = new Gmp(100);
+        $gmp_a = Gmp::factory(100);
 
         // Positive arg and result
         $this->assertSame('98', $gmp_a->sub(2)->toString());
@@ -231,7 +231,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testMul()
     {
-        $gmp_a = new Gmp(2);
+        $gmp_a = Gmp::factory(2);
 
         // Positive arg and result
         $this->assertSame('4', $gmp_a->mul(2)->toString());
@@ -245,7 +245,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testDiv()
     {
-        $gmp_a = new Gmp(20);
+        $gmp_a = Gmp::factory(20);
 
         // Positive arg and result
         $this->assertSame('10', $gmp_a->div(2)->toString());
@@ -256,7 +256,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testPow()
     {
-        $gmp_a = new Gmp(2);
+        $gmp_a = Gmp::factory(2);
 
         // Positive arg and result
         $this->assertSame('256', $gmp_a->pow(8)->toString());
@@ -271,7 +271,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testPowMod()
     {
-        $gmp_a = new Gmp(2);
+        $gmp_a = Gmp::factory(2);
 
         // Positive arg and result
         $this->assertSame('6', $gmp_a->powMod(8, 10)->toString());
@@ -286,7 +286,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testSqrt()
     {
-        $gmp_a = new Gmp(256);
+        $gmp_a = Gmp::factory(256);
 
         // Positive arg and result
         $this->assertSame('16', $gmp_a->sqrt()->toString());
@@ -294,7 +294,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testMod()
     {
-        $gmp_a = new Gmp(256);
+        $gmp_a = Gmp::factory(256);
 
         // Positive arg and result
         $this->assertSame('6', $gmp_a->mod(10)->toString());
@@ -319,7 +319,7 @@ class GmpTest extends AbstractAdapterTest
             62 => '1LY7VK',
         );
 
-        $gmp = new Gmp($decimal_integer);
+        $gmp = Gmp::factory($decimal_integer);
 
         foreach ($test_conversion_map as $radix => $string) {
             $this->assertSame($string, $gmp->toString($radix));

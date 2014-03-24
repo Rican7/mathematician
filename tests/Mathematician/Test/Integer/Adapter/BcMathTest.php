@@ -24,16 +24,32 @@ class BcMathTest extends AbstractAdapterTest
 
     protected function getTestBcMathNumber()
     {
-        return new BcMath(PHP_INT_MAX);
+        return BcMath::factory(PHP_INT_MAX);
     }
 
     public function bcmathProvider()
     {
         return array(
-            array('18446744073709551616', new BcMath('18446744073709551616')),
-            array('-1', new BcMath('-1')),
-            array('4564564', new BcMath('4564564')),
+            array('18446744073709551616', BcMath::factory('18446744073709551616')),
+            array('-1', BcMath::factory('-1')),
+            array('4564564', BcMath::factory('4564564')),
         );
+    }
+
+    public function testConstructor()
+    {
+        $bcmath = new BcMath(PHP_INT_MAX, 10);
+
+        $this->assertTrue($bcmath instanceof BcMath);
+    }
+
+    public function testConstructorRemovesDecimalValues()
+    {
+        $bcmath = new BcMath(10.5, 10);
+
+        $this->assertTrue($bcmath instanceof BcMath);
+
+        $this->assertSame('10', $bcmath->getRawValue());
     }
 
     public function testFactory()
@@ -41,32 +57,28 @@ class BcMathTest extends AbstractAdapterTest
         $this->assertTrue(BcMath::factory(PHP_INT_MAX) instanceof BcMath);
     }
 
-    public function testConstructor()
-    {
-        $bcmath = new BcMath(PHP_INT_MAX);
-
-        $this->assertTrue($bcmath instanceof BcMath);
-    }
-
-    public function testConstructorRemovesDecimalValues()
-    {
-        $bcmath = new BcMath(10.5);
-
-        $this->assertTrue($bcmath instanceof BcMath);
-
-        $this->assertSame('10', $bcmath->getRawValue());
-    }
-
     /**
      * @dataProvider numberSystemProvider
      */
-    public function testConstructorWithRadix($radix, $value)
+    public function testFactoryWithRadix($radix, $value)
     {
-        $bcmath = new BcMath($value, $radix);
+        $bcmath = BcMath::factory($value, $radix);
 
         $this->assertTrue($bcmath instanceof BcMath);
 
         $this->assertSame('1234567890', $bcmath->getRawValue());
+    }
+
+    /**
+     * @dataProvider numberBaseRepresentationProvider
+     */
+    public function testFactoryBaseDetection($radix, $value)
+    {
+        $bcmath = BcMath::factory($value);
+
+        $this->assertTrue($bcmath instanceof BcMath);
+
+        $this->assertSame('12345', $bcmath->getRawValue());
     }
 
     /**
@@ -86,11 +98,11 @@ class BcMathTest extends AbstractAdapterTest
             5.5, // float
             '18446744073709551618', // Big int String
             '18446744073709551618.18446744073709551618', // Big float String
-            new BcMath(5), // Another instance
+            BcMath::factory(5), // Another instance
         );
 
         // Our instance
-        $bcmath = new BcMath(5);
+        $bcmath = BcMath::factory(5);
 
         // Make sure we actually loop through each arg
         $loop_count = 0;
@@ -121,7 +133,7 @@ class BcMathTest extends AbstractAdapterTest
         );
 
         // Our instance
-        $bcmath = new BcMath(5);
+        $bcmath = BcMath::factory(5);
 
         // Make sure we actually loop through each arg
         $loop_count = 0;
@@ -162,7 +174,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testCompareTo()
     {
-        $bcmath_a = new BcMath(256);
+        $bcmath_a = BcMath::factory(256);
 
         // Equals
         $this->assertSame(0, $bcmath_a->compareTo(256));
@@ -176,7 +188,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testAdd()
     {
-        $bcmath_a = new BcMath(100);
+        $bcmath_a = BcMath::factory(100);
 
         // Positive arg and result
         $this->assertSame('102', $bcmath_a->add(2)->toString());
@@ -193,7 +205,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testSub()
     {
-        $bcmath_a = new BcMath(100);
+        $bcmath_a = BcMath::factory(100);
 
         // Positive arg and result
         $this->assertSame('98', $bcmath_a->sub(2)->toString());
@@ -207,7 +219,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testMul()
     {
-        $bcmath_a = new BcMath(2);
+        $bcmath_a = BcMath::factory(2);
 
         // Positive arg and result
         $this->assertSame('4', $bcmath_a->mul(2)->toString());
@@ -221,7 +233,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testDiv()
     {
-        $bcmath_a = new BcMath(20);
+        $bcmath_a = BcMath::factory(20);
 
         // Positive arg and result
         $this->assertSame('10', $bcmath_a->div(2)->toString());
@@ -232,7 +244,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testPow()
     {
-        $bcmath_a = new BcMath(2);
+        $bcmath_a = BcMath::factory(2);
 
         // Positive arg and result
         $this->assertSame('256', $bcmath_a->pow(8)->toString());
@@ -246,21 +258,23 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testPowMod()
     {
-        $bcmath_a = new BcMath(2);
+        $bcmath_a = BcMath::factory(2);
 
         // Positive arg and result
         $this->assertSame('6', $bcmath_a->powMod(8, 10)->toString());
 
         // Negative arg and zero result
-        $this->assertSame('0', $bcmath_a->powMod(-2, 10)->toString());
+        // TODO: Catch invalid negative powers when using powmod operation
+        // $this->assertSame('0', $bcmath_a->powMod(-2, 10)->toString());
 
         // Zero arg
-        $this->assertSame('0', $bcmath_a->powMod(0, 0)->toString());
+        // TODO: Don't allow 0 modulus param
+        // $this->assertSame('0', $bcmath_a->powMod(0, 0)->toString());
     }
 
     public function testSqrt()
     {
-        $bcmath_a = new BcMath(256);
+        $bcmath_a = BcMath::factory(256);
 
         // Positive arg and result
         $this->assertSame('16', $bcmath_a->sqrt()->toString());
@@ -268,7 +282,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testMod()
     {
-        $bcmath_a = new BcMath(256);
+        $bcmath_a = BcMath::factory(256);
 
         // Positive arg and result
         $this->assertSame('6', $bcmath_a->mod(10)->toString());
@@ -293,7 +307,7 @@ class BcMathTest extends AbstractAdapterTest
             62 => '1LY7VK',
         );
 
-        $bc_math = new BcMath($decimal_integer);
+        $bc_math = BcMath::factory($decimal_integer);
 
         foreach ($test_conversion_map as $radix => $string) {
             $this->assertSame($string, $bc_math->toString($radix));
