@@ -21,6 +21,43 @@ abstract class AbstractAdapter implements AdapterInterface
 {
 
     /**
+     * Constants
+     */
+
+    /**
+     * The regular expression used to match
+     * against the DECIMAL numeric base
+     *
+     * @const string
+     */
+    const NUMERIC_BASE_REGEX_DECIMAL = '`\\b(?:[1-9][0-9]*|0)\\b`';
+
+    /**
+     * The regular expression used to match
+     * against the HEXADECIMAL numeric base
+     *
+     * @const string
+     */
+    const NUMERIC_BASE_REGEX_HEXADECIMAL = '`\\b(?:0[xX][0-9a-fA-F]+)\\b`';
+
+    /**
+     * The regular expression used to match
+     * against the OCTAL numeric base
+     *
+     * @const string
+     */
+    const NUMERIC_BASE_REGEX_OCTAL = '`\\b(?:0[0-7]+)\\b`';
+
+    /**
+     * The regular expression used to match
+     * against the BINARY numeric base
+     *
+     * @const string
+     */
+    const NUMERIC_BASE_REGEX_BINARY = '`\\b(?:0b[01]+)\\b`';
+
+
+    /**
      * Properties
      */
 
@@ -57,6 +94,33 @@ abstract class AbstractAdapter implements AdapterInterface
     public function __toString()
     {
         return $this->toString();
+    }
+
+    /**
+     * Attempt to detect the numeric base of a given numeric
+     * representation as a string
+     *
+     * If the base can't be confidently detected, this method
+     * will return an int(0)
+     *
+     * @param string $numeric_string
+     * @static
+     * @access public
+     * @return int
+     */
+    public static function detectNumericBase($numeric_string)
+    {
+        if (preg_match(static::NUMERIC_BASE_REGEX_DECIMAL, $numeric_string)) {
+            return 10;
+        } elseif (preg_match(static::NUMERIC_BASE_REGEX_HEXADECIMAL, $numeric_string)) {
+            return 16;
+        } elseif (preg_match(static::NUMERIC_BASE_REGEX_OCTAL, $numeric_string)) {
+            return 8;
+        } elseif (preg_match(static::NUMERIC_BASE_REGEX_BINARY, $numeric_string)) {
+            return 2;
+        }
+
+        return 0;
     }
 
     /**
