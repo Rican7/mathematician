@@ -255,6 +255,112 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Bitwise "and" (&)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitAnd($number)
+    {
+        $result = gmp_and(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "or" (|)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitOr($number)
+    {
+        $result = gmp_or(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "xor" (^)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitXor($number)
+    {
+        $result = gmp_xor(
+            $this->getRawValue(),
+            static::upgradeParam($number)->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "not" (~)
+     *
+     * @access public
+     * @return self
+     */
+    public function bitNot()
+    {
+        $result = gmp_com(
+            $this->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "shift left" (<<)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftLeft($number)
+    {
+        $result = gmp_mul(
+            $this->getRawValue(),
+            gmp_pow(
+                2,
+                static::upgradeParam($number)->getRawValue()
+            )
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "shift right" (>>)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftRight($number)
+    {
+        $result = gmp_mul(
+            $this->getRawValue(),
+            gmp_div(
+                2,
+                static::upgradeParam($number)->getRawValue()
+            )
+        );
+
+        return static::factory($result);
+    }
+
+    /**
      * Get a string representation of the number
      *
      * @param int $radix
