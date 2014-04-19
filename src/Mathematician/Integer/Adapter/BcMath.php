@@ -249,6 +249,166 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Bitwise "and" (&)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitAnd($number)
+    {
+        // Get both numbers in reversed binary (base 2) format
+        $binary_this = strrev($this->toString(2));
+        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+
+        $result = '';
+
+        // Loop through each character in the binary string
+        for ($i = 0; $i < strlen($binary_this); $i++) {
+            if (isset($binary_other[$i])) {
+                if ($binary_this[$i] === '1' && $binary_other[$i] === '1') {
+                    $result .= '1';
+                } else {
+                    $result .= '0';
+                }
+            } else {
+                $result .= '0';
+            }
+        }
+
+        // Re-reverse our string to get it in normal bit order
+        $result = strrev($result);
+
+        return static::factory('0b' . $result);
+    }
+
+    /**
+     * Bitwise "or" (|)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitOr($number)
+    {
+        // Get both numbers in reversed binary (base 2) format
+        $binary_this = strrev($this->toString(2));
+        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+
+        $result = '';
+
+        // Loop through each character in the binary string
+        for ($i = 0; $i < strlen($binary_this); $i++) {
+            if ($binary_this[$i] === '1'
+                || (isset($binary_other[$i]) && $binary_other[$i] === '1')) {
+
+                $result .= '1';
+            } else {
+                $result .= '0';
+            }
+        }
+
+        // Re-reverse our string to get it in normal bit order
+        $result = strrev($result);
+
+        return static::factory('0b' . $result);
+    }
+
+    /**
+     * Bitwise "xor" (^)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitXor($number)
+    {
+        // Get both numbers in reversed binary (base 2) format
+        $binary_this = strrev($this->toString(2));
+        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+
+        $result = '';
+
+        // Loop through each character in the binary string
+        for ($i = 0; $i < strlen($binary_this); $i++) {
+            $other_val = isset($binary_other[$i]) ? $binary_other[$i] : '0';
+
+            if ($binary_this[$i] === '1' && $other_val === '0') {
+                $result .= '1';
+            } elseif ($binary_this[$i] === '0' && $other_val === '1') {
+                $result .= '1';
+            } else {
+                $result .= '0';
+            }
+        }
+
+        // Re-reverse our string to get it in normal bit order
+        $result = strrev($result);
+
+        return static::factory('0b' . $result);
+    }
+
+    /**
+     * Bitwise "not" (~)
+     *
+     * @access public
+     * @return self
+     */
+    public function bitNot()
+    {
+        // We can cheat two's complement "not"
+        $added = $this->add(1);
+
+        if (1 === $added->compareTo(0)) {
+            $result = '-' . $added->toString();
+        } else {
+            $result = substr($added->toString(), 1);
+        }
+
+        return static::factory('0b' . $result);
+    }
+
+    /**
+     * Bitwise "shift left" (<<)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftLeft($number)
+    {
+        $result = bcmul(
+            $this->getRawValue(),
+            bcpow(
+                2,
+                static::upgradeParam($number)->getRawValue()
+            )
+        );
+
+        return static::factory($result);
+    }
+
+    /**
+     * Bitwise "shift right" (>>)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftRight($number)
+    {
+        $result = bcmul(
+            $this->getRawValue(),
+            bcdiv(
+                2,
+                static::upgradeParam($number)->getRawValue()
+            )
+        );
+
+        return static::factory($result);
+    }
+
+    /**
      * Get a string representation of the number
      *
      * @param int $radix
