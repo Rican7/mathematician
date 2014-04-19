@@ -333,7 +333,7 @@ class Gmp extends AbstractAdapter implements AdapterInterface
             $this->getRawValue(),
             gmp_pow(
                 2,
-                static::upgradeParam($number)->getRawValue()
+                static::upgradeParam($number)->toString()
             )
         );
 
@@ -349,11 +349,11 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      */
     public function bitShiftRight($number)
     {
-        $result = gmp_mul(
+        $result = gmp_div(
             $this->getRawValue(),
-            gmp_div(
+            gmp_pow(
                 2,
-                static::upgradeParam($number)->getRawValue()
+                static::upgradeParam($number)->toString()
             )
         );
 
