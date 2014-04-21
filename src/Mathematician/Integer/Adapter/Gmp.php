@@ -118,6 +118,32 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Check if the number is negative
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isNegative()
+    {
+        return ($this->compareTo(0) === -1);
+    }
+
+    /**
+     * Get the absolute value
+     *
+     * @access public
+     * @return self
+     */
+    public function abs()
+    {
+        $result = gmp_abs(
+            $this->getRawValue()
+        );
+
+        return static::factory($result);
+    }
+
+    /**
      * Add numbers
      *
      * @param mixed $number
