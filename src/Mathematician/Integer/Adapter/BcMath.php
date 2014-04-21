@@ -117,6 +117,23 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Get the absolute value
+     *
+     * @access public
+     * @return self
+     */
+    public function abs()
+    {
+        $string = $this->toString();
+
+        if (strpos($string, '-') === 0) {
+            $string = substr($string, 1);
+        }
+
+        return static::factory($string);
+    }
+
+    /**
      * Get the two's complement of the number, without native signed interpretation
      *
      * @access public
@@ -129,11 +146,7 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         if ($this->isNegative()) {
             $result = static::flipBits($binary);
 
-            if (strpos($result, '-') === 0) {
-                $result = substr($result, 1);
-            }
-
-            return static::factory($result, 2)->add(1);
+            return static::factory($result, 2)->abs()->add(1);
         }
 
         return static::factory($binary, 2);
@@ -450,12 +463,10 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         $added = $this->add(1);
 
         if ($added->isNegative()) {
-            $result = substr($added->toString(), 1);
-        } else {
-            $result = '-' . $added->toString();
+            return $added->abs();
         }
 
-        return static::factory($result);
+        return static::factory('-' . $added->toString());
     }
 
     /**
