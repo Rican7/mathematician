@@ -106,6 +106,40 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Check if the number is negative
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isNegative()
+    {
+        return (bccomp($this->getRawValue(), 0) === -1);
+    }
+
+    /**
+     * Get the two's complement of the number, without native signed interpretation
+     *
+     * @access public
+     * @return self
+     */
+    public function twosComplement()
+    {
+        $binary = $this->toString(2);
+
+        if ($this->isNegative()) {
+            $result = static::flipBits($binary);
+
+            if (strpos($result, '-') === 0) {
+                $result = substr($result, 1);
+            }
+
+            return static::factory($result, 2)->add(1);
+        }
+
+        return static::factory($binary, 2);
+    }
+
+    /**
      * Add numbers
      *
      * @param mixed $number
@@ -257,20 +291,23 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public function bitAnd($number)
     {
-        // Get both numbers in reversed binary (base 2) format
-        $binary_this = strrev($this->toString(2));
-        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+        $number = static::upgradeParam($number);
+
+        // Get both numbers in reversed binary (base 2) format based on their raw two's complement
+        $binary_this = strrev($this->twosComplement()->toString(2));
+        $binary_other = strrev($number->twosComplement()->toString(2));
 
         $result = '';
 
+        $length = max(strlen($binary_this), strlen($binary_other));
+
         // Loop through each character in the binary string
-        for ($i = 0; $i < strlen($binary_this); $i++) {
-            if (isset($binary_other[$i])) {
-                if ($binary_this[$i] === '1' && $binary_other[$i] === '1') {
-                    $result .= '1';
-                } else {
-                    $result .= '0';
-                }
+        for ($i = 0; $i < $length; $i++) {
+            $this_val = isset($binary_this[$i]) ? $binary_this[$i] : '0';
+            $other_val = isset($binary_other[$i]) ? $binary_other[$i] : '0';
+
+            if ($this_val === '1' && $other_val === '1') {
+                $result .= '1';
             } else {
                 $result .= '0';
             }
@@ -279,7 +316,14 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         // Re-reverse our string to get it in normal bit order
         $result = strrev($result);
 
-        return static::factory('0b' . $result);
+        if ($this->isNegative() && $number->isNegative()) {
+            // To fullfil the two's complement notation, we add a leading '1'
+            $result = '1' . static::flipBits($result);
+
+            return static::factory($result, 2)->bitNot();
+        }
+
+        return static::factory($result, 2);
     }
 
     /**
@@ -291,17 +335,34 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public function bitOr($number)
     {
-        // Get both numbers in reversed binary (base 2) format
-        $binary_this = strrev($this->toString(2));
-        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+        $number = static::upgradeParam($number);
+
+        // Get both numbers in reversed binary (base 2) format based on their raw two's complement
+        $binary_this = strrev($this->twosComplement()->toString(2));
+        $binary_other = strrev($number->twosComplement()->toString(2));
+
+        // To fullfil the two's complement notation, we add a leading '1'
+        if ($this->isNegative()) {
+            $pad_length = strlen($this->toString(2));
+            $binary_this = str_pad($binary_this, $pad_length, '0', STR_PAD_RIGHT);
+            $binary_this[$pad_length - 1] = '1';
+        }
+        if ($number->isNegative()) {
+            $pad_length = strlen($number->toString(2));
+            $binary_other = str_pad($binary_other, $pad_length, '0', STR_PAD_RIGHT);
+            $binary_other[$pad_length - 1] = '1';
+        }
 
         $result = '';
 
-        // Loop through each character in the binary string
-        for ($i = 0; $i < strlen($binary_this); $i++) {
-            if ($binary_this[$i] === '1'
-                || (isset($binary_other[$i]) && $binary_other[$i] === '1')) {
+        $length = max(strlen($binary_this), strlen($binary_other));
 
+        // Loop through each character in the binary string
+        for ($i = 0; $i < $length; $i++) {
+            $this_val = isset($binary_this[$i]) ? $binary_this[$i] : '0';
+            $other_val = isset($binary_other[$i]) ? $binary_other[$i] : '0';
+
+            if ($this_val === '1' || $other_val === '1') {
                 $result .= '1';
             } else {
                 $result .= '0';
@@ -311,7 +372,13 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         // Re-reverse our string to get it in normal bit order
         $result = strrev($result);
 
-        return static::factory('0b' . $result);
+        if ($this->isNegative() || $number->isNegative()) {
+            $result = static::flipBits($result);
+
+            return static::factory($result, 2)->bitNot();
+        }
+
+        return static::factory($result, 2);
     }
 
     /**
@@ -323,19 +390,36 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public function bitXor($number)
     {
-        // Get both numbers in reversed binary (base 2) format
-        $binary_this = strrev($this->toString(2));
-        $binary_other = strrev(static::upgradeParam($number)->toString(2));
+        $number = static::upgradeParam($number);
+
+        // Get both numbers in reversed binary (base 2) format based on their raw two's complement
+        $binary_this = strrev($this->twosComplement()->toString(2));
+        $binary_other = strrev($number->twosComplement()->toString(2));
+
+        // To fullfil the two's complement notation, we add a leading '1'
+        if ($this->isNegative()) {
+            $pad_length = strlen($this->toString(2));
+            $binary_this = str_pad($binary_this, $pad_length, '0', STR_PAD_RIGHT);
+            $binary_this[$pad_length - 1] = '1';
+        }
+        if ($number->isNegative()) {
+            $pad_length = strlen($number->toString(2));
+            $binary_other = str_pad($binary_other, $pad_length, '0', STR_PAD_RIGHT);
+            $binary_other[$pad_length - 1] = '1';
+        }
 
         $result = '';
 
+        $length = max(strlen($binary_this), strlen($binary_other));
+
         // Loop through each character in the binary string
-        for ($i = 0; $i < strlen($binary_this); $i++) {
+        for ($i = 0; $i < $length; $i++) {
+            $this_val = isset($binary_this[$i]) ? $binary_this[$i] : '0';
             $other_val = isset($binary_other[$i]) ? $binary_other[$i] : '0';
 
-            if ($binary_this[$i] === '1' && $other_val === '0') {
+            if ($this_val === '1' && $other_val === '0') {
                 $result .= '1';
-            } elseif ($binary_this[$i] === '0' && $other_val === '1') {
+            } elseif ($this_val === '0' && $other_val === '1') {
                 $result .= '1';
             } else {
                 $result .= '0';
@@ -345,7 +429,13 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         // Re-reverse our string to get it in normal bit order
         $result = strrev($result);
 
-        return static::factory('0b' . $result);
+        if ($this->isNegative() ^ $number->isNegative()) {
+            $result = static::flipBits($result);
+
+            return static::factory($result, 2)->bitNot();
+        }
+
+        return static::factory($result, 2);
     }
 
     /**
@@ -359,13 +449,13 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         // We can cheat two's complement "not"
         $added = $this->add(1);
 
-        if (1 === $added->compareTo(0)) {
-            $result = '-' . $added->toString();
-        } else {
+        if ($added->isNegative()) {
             $result = substr($added->toString(), 1);
+        } else {
+            $result = '-' . $added->toString();
         }
 
-        return static::factory('0b' . $result);
+        return static::factory($result);
     }
 
     /**
@@ -538,5 +628,34 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         }
 
         return (string) $converted;
+    }
+
+    /**
+     * Flip the bits of a given binary string
+     *
+     * @param string $bit_string
+     * @static
+     * @access protected
+     * @return string
+     */
+    protected static function flipBits($bit_string)
+    {
+        $result = '';
+
+        // If its a negative, then add our negative sign
+        if (strpos($bit_string, '-') === 0) {
+            $result = '-';
+        }
+
+        // Flip the bits
+        for ($i = 0; $i < strlen($bit_string); $i++) {
+            if ($bit_string[$i] === '1') {
+                $result .= '0';
+            } elseif ($bit_string[$i] === '0') {
+                $result .= '1';
+            }
+        }
+
+        return $result;
     }
 }
