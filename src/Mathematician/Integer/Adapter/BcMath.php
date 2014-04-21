@@ -397,9 +397,9 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public function bitShiftRight($number)
     {
-        $result = bcmul(
+        $result = bcdiv(
             $this->getRawValue(),
-            bcdiv(
+            bcpow(
                 2,
                 static::upgradeParam($number)->getRawValue()
             )
@@ -469,6 +469,13 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         $alphabet = static::getNumericAlphabetForBase($to_base);
 
         $converted = '';
+        $negative = false;
+
+        // Handle negative prefixes
+        if (strpos($numeric_string, '-') === 0) {
+            $numeric_string = substr($numeric_string, 1);
+            $negative = true;
+        }
 
         // Loop until our original argument is 0
         while (0 !== bccomp($numeric_string, 0, static::DEFAULT_SCALE)) {
@@ -477,6 +484,10 @@ class BcMath extends AbstractAdapter implements AdapterInterface
             $numeric_string = bcdiv($numeric_string, $to_base, static::DEFAULT_SCALE);
 
             $converted = $alphabet[$remainder] . $converted;
+        }
+
+        if ($negative) {
+            $converted = '-' . $converted;
         }
 
         return (string) $converted;
@@ -502,6 +513,14 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         }
 
         $converted = '';
+        $negative = false;
+
+        // Handle negative prefixes
+        if (strpos($numeric_string, '-') === 0) {
+            $numeric_string = substr($numeric_string, 1);
+            $negative = true;
+        }
+
         $string_length = strlen($numeric_string);
 
         // Loop until our original argument is 0
@@ -512,6 +531,10 @@ class BcMath extends AbstractAdapter implements AdapterInterface
             $raised = bcmul($char, $power, static::DEFAULT_SCALE);
 
             $converted = bcadd($converted, $raised, static::DEFAULT_SCALE);
+        }
+
+        if ($negative) {
+            $converted = '-' . $converted;
         }
 
         return (string) $converted;
