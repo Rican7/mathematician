@@ -113,7 +113,7 @@ class BcMath extends AbstractAdapter implements AdapterInterface
      */
     public function isNegative()
     {
-        return (bccomp($this->getRawValue(), 0) === -1);
+        return ($this->compareTo(0) === -1);
     }
 
     /**
