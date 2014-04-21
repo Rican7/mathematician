@@ -324,64 +324,64 @@ class GmpTest extends AbstractAdapterTest
 
     public function testBitAnd()
     {
-        $gmp_a = Gmp::factory(0b101010101);
-        $gmp_b = Gmp::factory(-0b101010101);
+        $gmp_a = Gmp::factory('0b101010101');
+        $gmp_b = Gmp::factory('-0b101010101');
 
-        $this->assertSame('325', $gmp_a->bitAnd(0b111000111)->toString());
-        $this->assertSame('16', $gmp_a->bitAnd(0b000111000)->toString());
-        $this->assertSame('273', $gmp_a->bitAnd(0b100111001)->toString());
-        $this->assertSame('69', $gmp_a->bitAnd(-0b110011001)->toString());
+        $this->assertSame('325', $gmp_a->bitAnd('0b111000111')->toString());
+        $this->assertSame('16', $gmp_a->bitAnd('0b000111000')->toString());
+        $this->assertSame('273', $gmp_a->bitAnd('0b100111001')->toString());
+        $this->assertSame('69', $gmp_a->bitAnd('-0b110011001')->toString());
 
-        $this->assertSame('131', $gmp_b->bitAnd(0b111000111)->toString());
-        $this->assertSame('40', $gmp_b->bitAnd(0b000111000)->toString());
-        $this->assertSame('41', $gmp_b->bitAnd(0b100111001)->toString());
-        $this->assertSame('-477', $gmp_b->bitAnd(-0b110011001)->toString());
+        $this->assertSame('131', $gmp_b->bitAnd('0b111000111')->toString());
+        $this->assertSame('40', $gmp_b->bitAnd('0b000111000')->toString());
+        $this->assertSame('41', $gmp_b->bitAnd('0b100111001')->toString());
+        $this->assertSame('-477', $gmp_b->bitAnd('-0b110011001')->toString());
     }
 
     public function testBitOr()
     {
-        $gmp_a = Gmp::factory(0b101010101);
-        $gmp_b = Gmp::factory(-0b101010101);
+        $gmp_a = Gmp::factory('0b101010101');
+        $gmp_b = Gmp::factory('-0b101010101');
 
-        $this->assertSame('471', $gmp_a->bitOr(0b111000111)->toString());
-        $this->assertSame('381', $gmp_a->bitOr(0b000111000)->toString());
-        $this->assertSame('381', $gmp_a->bitOr(0b100111001)->toString());
-        $this->assertSame('-137', $gmp_a->bitOr(-0b110011001)->toString());
+        $this->assertSame('471', $gmp_a->bitOr('0b111000111')->toString());
+        $this->assertSame('381', $gmp_a->bitOr('0b000111000')->toString());
+        $this->assertSame('381', $gmp_a->bitOr('0b100111001')->toString());
+        $this->assertSame('-137', $gmp_a->bitOr('-0b110011001')->toString());
 
-        $this->assertSame('-17', $gmp_b->bitOr(0b111000111)->toString());
-        $this->assertSame('-325', $gmp_b->bitOr(0b000111000)->toString());
-        $this->assertSame('-69', $gmp_b->bitOr(0b100111001)->toString());
-        $this->assertSame('-273', $gmp_b->bitOr(-0b110011001)->toString());
+        $this->assertSame('-17', $gmp_b->bitOr('0b111000111')->toString());
+        $this->assertSame('-325', $gmp_b->bitOr('0b000111000')->toString());
+        $this->assertSame('-69', $gmp_b->bitOr('0b100111001')->toString());
+        $this->assertSame('-273', $gmp_b->bitOr('-0b110011001')->toString());
     }
 
     public function testBitXor()
     {
-        $gmp_a = Gmp::factory(0b101010101);
-        $gmp_b = Gmp::factory(-0b101010101);
+        $gmp_a = Gmp::factory('0b101010101');
+        $gmp_b = Gmp::factory('-0b101010101');
 
-        $this->assertSame('146', $gmp_a->bitXor(0b111000111)->toString());
-        $this->assertSame('365', $gmp_a->bitXor(0b000111000)->toString());
-        $this->assertSame('108', $gmp_a->bitXor(0b100111001)->toString());
-        $this->assertSame('-206', $gmp_a->bitXor(-0b110011001)->toString());
+        $this->assertSame('146', $gmp_a->bitXor('0b111000111')->toString());
+        $this->assertSame('365', $gmp_a->bitXor('0b000111000')->toString());
+        $this->assertSame('108', $gmp_a->bitXor('0b100111001')->toString());
+        $this->assertSame('-206', $gmp_a->bitXor('-0b110011001')->toString());
 
-        $this->assertSame('-148', $gmp_b->bitXor(0b111000111)->toString());
-        $this->assertSame('-365', $gmp_b->bitXor(0b000111000)->toString());
-        $this->assertSame('-110', $gmp_b->bitXor(0b100111001)->toString());
-        $this->assertSame('204', $gmp_b->bitXor(-0b110011001)->toString());
+        $this->assertSame('-148', $gmp_b->bitXor('0b111000111')->toString());
+        $this->assertSame('-365', $gmp_b->bitXor('0b000111000')->toString());
+        $this->assertSame('-110', $gmp_b->bitXor('0b100111001')->toString());
+        $this->assertSame('204', $gmp_b->bitXor('-0b110011001')->toString());
     }
 
     public function testBitNot()
     {
-        $this->assertSame('-342', Gmp::factory(0b101010101)->bitNot()->toString());
-        $this->assertSame('-456', Gmp::factory(0b111000111)->bitNot()->toString());
-        $this->assertSame('-57', Gmp::factory(0b000111000)->bitNot()->toString());
-        $this->assertSame('-314', Gmp::factory(0b100111001)->bitNot()->toString());
-        $this->assertSame('408', Gmp::factory(-0b110011001)->bitNot()->toString());
+        $this->assertSame('-342', Gmp::factory('0b101010101')->bitNot()->toString());
+        $this->assertSame('-456', Gmp::factory('0b111000111')->bitNot()->toString());
+        $this->assertSame('-57', Gmp::factory('0b000111000')->bitNot()->toString());
+        $this->assertSame('-314', Gmp::factory('0b100111001')->bitNot()->toString());
+        $this->assertSame('408', Gmp::factory('-0b110011001')->bitNot()->toString());
     }
 
     public function testBitShiftLeft()
     {
-        $gmp_a = Gmp::factory(0b101010101);
+        $gmp_a = Gmp::factory('0b101010101');
 
         $this->assertSame('682', $gmp_a->bitShiftLeft(1)->toString());
         $this->assertSame('1364', $gmp_a->bitShiftLeft(2)->toString());
@@ -391,7 +391,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testBitShiftRight()
     {
-        $gmp_a = Gmp::factory(0b101010101);
+        $gmp_a = Gmp::factory('0b101010101');
 
         $this->assertSame('170', $gmp_a->bitShiftRight(1)->toString());
         $this->assertSame('85', $gmp_a->bitShiftRight(2)->toString());

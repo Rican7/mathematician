@@ -312,64 +312,64 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testBitAnd()
     {
-        $bcmath_a = BcMath::factory(0b101010101);
-        $bcmath_b = BcMath::factory(-0b101010101);
+        $bcmath_a = BcMath::factory('0b101010101');
+        $bcmath_b = BcMath::factory('-0b101010101');
 
-        $this->assertSame('325', $bcmath_a->bitAnd(0b111000111)->toString());
-        $this->assertSame('16', $bcmath_a->bitAnd(0b000111000)->toString());
-        $this->assertSame('273', $bcmath_a->bitAnd(0b100111001)->toString());
-        $this->assertSame('69', $bcmath_a->bitAnd(-0b110011001)->toString());
+        $this->assertSame('325', $bcmath_a->bitAnd('0b111000111')->toString());
+        $this->assertSame('16', $bcmath_a->bitAnd('0b000111000')->toString());
+        $this->assertSame('273', $bcmath_a->bitAnd('0b100111001')->toString());
+        $this->assertSame('69', $bcmath_a->bitAnd('-0b110011001')->toString());
 
-        $this->assertSame('131', $bcmath_b->bitAnd(0b111000111)->toString());
-        $this->assertSame('40', $bcmath_b->bitAnd(0b000111000)->toString());
-        $this->assertSame('41', $bcmath_b->bitAnd(0b100111001)->toString());
-        $this->assertSame('-477', $bcmath_b->bitAnd(-0b110011001)->toString());
+        $this->assertSame('131', $bcmath_b->bitAnd('0b111000111')->toString());
+        $this->assertSame('40', $bcmath_b->bitAnd('0b000111000')->toString());
+        $this->assertSame('41', $bcmath_b->bitAnd('0b100111001')->toString());
+        $this->assertSame('-477', $bcmath_b->bitAnd('-0b110011001')->toString());
     }
 
     public function testBitOr()
     {
-        $bcmath_a = BcMath::factory(0b101010101);
-        $bcmath_b = BcMath::factory(-0b101010101);
+        $bcmath_a = BcMath::factory('0b101010101');
+        $bcmath_b = BcMath::factory('-0b101010101');
 
-        $this->assertSame('471', $bcmath_a->bitOr(0b111000111)->toString());
-        $this->assertSame('381', $bcmath_a->bitOr(0b000111000)->toString());
-        $this->assertSame('381', $bcmath_a->bitOr(0b100111001)->toString());
-        $this->assertSame('-137', $bcmath_a->bitOr(-0b110011001)->toString());
+        $this->assertSame('471', $bcmath_a->bitOr('0b111000111')->toString());
+        $this->assertSame('381', $bcmath_a->bitOr('0b000111000')->toString());
+        $this->assertSame('381', $bcmath_a->bitOr('0b100111001')->toString());
+        $this->assertSame('-137', $bcmath_a->bitOr('-0b110011001')->toString());
 
-        $this->assertSame('-17', $bcmath_b->bitOr(0b111000111)->toString());
-        $this->assertSame('-325', $bcmath_b->bitOr(0b000111000)->toString());
-        $this->assertSame('-69', $bcmath_b->bitOr(0b100111001)->toString());
-        $this->assertSame('-273', $bcmath_b->bitOr(-0b110011001)->toString());
+        $this->assertSame('-17', $bcmath_b->bitOr('0b111000111')->toString());
+        $this->assertSame('-325', $bcmath_b->bitOr('0b000111000')->toString());
+        $this->assertSame('-69', $bcmath_b->bitOr('0b100111001')->toString());
+        $this->assertSame('-273', $bcmath_b->bitOr('-0b110011001')->toString());
     }
 
     public function testBitXor()
     {
-        $bcmath_a = BcMath::factory(0b101010101);
-        $bcmath_b = BcMath::factory(-0b101010101);
+        $bcmath_a = BcMath::factory('0b101010101');
+        $bcmath_b = BcMath::factory('-0b101010101');
 
-        $this->assertSame('146', $bcmath_a->bitXor(0b111000111)->toString());
-        $this->assertSame('365', $bcmath_a->bitXor(0b000111000)->toString());
-        $this->assertSame('108', $bcmath_a->bitXor(0b100111001)->toString());
-        $this->assertSame('-206', $bcmath_a->bitXor(-0b110011001)->toString());
+        $this->assertSame('146', $bcmath_a->bitXor('0b111000111')->toString());
+        $this->assertSame('365', $bcmath_a->bitXor('0b000111000')->toString());
+        $this->assertSame('108', $bcmath_a->bitXor('0b100111001')->toString());
+        $this->assertSame('-206', $bcmath_a->bitXor('-0b110011001')->toString());
 
-        $this->assertSame('-148', $bcmath_b->bitXor(0b111000111)->toString());
-        $this->assertSame('-365', $bcmath_b->bitXor(0b000111000)->toString());
-        $this->assertSame('-110', $bcmath_b->bitXor(0b100111001)->toString());
-        $this->assertSame('204', $bcmath_b->bitXor(-0b110011001)->toString());
+        $this->assertSame('-148', $bcmath_b->bitXor('0b111000111')->toString());
+        $this->assertSame('-365', $bcmath_b->bitXor('0b000111000')->toString());
+        $this->assertSame('-110', $bcmath_b->bitXor('0b100111001')->toString());
+        $this->assertSame('204', $bcmath_b->bitXor('-0b110011001')->toString());
     }
 
     public function testBitNot()
     {
-        $this->assertSame('-342', BcMath::factory(0b101010101)->bitNot()->toString());
-        $this->assertSame('-456', BcMath::factory(0b111000111)->bitNot()->toString());
-        $this->assertSame('-57', BcMath::factory(0b000111000)->bitNot()->toString());
-        $this->assertSame('-314', BcMath::factory(0b100111001)->bitNot()->toString());
-        $this->assertSame('408', BcMath::factory(-0b110011001)->bitNot()->toString());
+        $this->assertSame('-342', BcMath::factory('0b101010101')->bitNot()->toString());
+        $this->assertSame('-456', BcMath::factory('0b111000111')->bitNot()->toString());
+        $this->assertSame('-57', BcMath::factory('0b000111000')->bitNot()->toString());
+        $this->assertSame('-314', BcMath::factory('0b100111001')->bitNot()->toString());
+        $this->assertSame('408', BcMath::factory('-0b110011001')->bitNot()->toString());
     }
 
     public function testBitShiftLeft()
     {
-        $bcmath_a = BcMath::factory(0b101010101);
+        $bcmath_a = BcMath::factory('0b101010101');
 
         $this->assertSame('682', $bcmath_a->bitShiftLeft(1)->toString());
         $this->assertSame('1364', $bcmath_a->bitShiftLeft(2)->toString());
@@ -379,7 +379,7 @@ class BcMathTest extends AbstractAdapterTest
 
     public function testBitShiftRight()
     {
-        $bcmath_a = BcMath::factory(0b101010101);
+        $bcmath_a = BcMath::factory('0b101010101');
 
         $this->assertSame('170', $bcmath_a->bitShiftRight(1)->toString());
         $this->assertSame('85', $bcmath_a->bitShiftRight(2)->toString());
