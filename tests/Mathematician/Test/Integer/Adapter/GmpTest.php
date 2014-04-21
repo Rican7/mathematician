@@ -198,6 +198,25 @@ class GmpTest extends AbstractAdapterTest
         $this->assertGreaterThan(0, $gmp_a->compareTo(100));
     }
 
+    public function testIsNegative()
+    {
+        $this->assertFalse(Gmp::factory(0)->isNegative());
+        $this->assertFalse(Gmp::factory(-0)->isNegative());
+        $this->assertFalse(Gmp::factory(1)->isNegative());
+        $this->assertFalse(Gmp::factory(10)->isNegative());
+        $this->assertFalse(Gmp::factory(PHP_INT_MAX)->isNegative());
+        $this->assertTrue(Gmp::factory(-1)->isNegative());
+        $this->assertTrue(Gmp::factory(-10)->isNegative());
+        $this->assertTrue(Gmp::factory(-PHP_INT_MAX)->isNegative());
+    }
+
+    public function testAbs()
+    {
+        $this->assertSame('100', Gmp::factory(-100)->abs()->toString());
+        $this->assertSame('123213', Gmp::factory(-123213)->abs()->toString());
+        $this->assertSame((string) PHP_INT_MAX, Gmp::factory(-PHP_INT_MAX)->abs()->toString());
+    }
+
     public function testAdd()
     {
         $gmp_a = Gmp::factory(100);

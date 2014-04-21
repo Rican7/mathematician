@@ -186,6 +186,25 @@ class BcMathTest extends AbstractAdapterTest
         $this->assertGreaterThan(0, $bcmath_a->compareTo(100));
     }
 
+    public function testIsNegative()
+    {
+        $this->assertFalse(BcMath::factory(0)->isNegative());
+        $this->assertFalse(BcMath::factory(-0)->isNegative());
+        $this->assertFalse(BcMath::factory(1)->isNegative());
+        $this->assertFalse(BcMath::factory(10)->isNegative());
+        $this->assertFalse(BcMath::factory(PHP_INT_MAX)->isNegative());
+        $this->assertTrue(BcMath::factory(-1)->isNegative());
+        $this->assertTrue(BcMath::factory(-10)->isNegative());
+        $this->assertTrue(BcMath::factory(-PHP_INT_MAX)->isNegative());
+    }
+
+    public function testAbs()
+    {
+        $this->assertSame('100', BcMath::factory(-100)->abs()->toString());
+        $this->assertSame('123213', BcMath::factory(-123213)->abs()->toString());
+        $this->assertSame((string) PHP_INT_MAX, BcMath::factory(-PHP_INT_MAX)->abs()->toString());
+    }
+
     public function testAdd()
     {
         $bcmath_a = BcMath::factory(100);
