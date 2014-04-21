@@ -66,11 +66,11 @@ class GmpTest extends AbstractAdapterTest
      */
     public function testConstructorWithRadix($radix, $value)
     {
-        $bcmath = new Gmp($value, $radix);
+        $gmp = new Gmp($value, $radix);
 
-        $this->assertTrue($bcmath instanceof Gmp);
+        $this->assertTrue($gmp instanceof Gmp);
 
-        $this->assertSame('1234567890', gmp_strval($bcmath->getRawValue(), 10));
+        $this->assertSame('1234567890', gmp_strval($gmp->getRawValue(), 10));
     }
 
     /**
