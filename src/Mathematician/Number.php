@@ -10,10 +10,10 @@
 
 namespace Mathematician;
 
+use Mathematician\Exception\AdapterSupportException;
 use Mathematician\Integer\Adapter\AdapterInterface;
 use Mathematician\Integer\Adapter\BcMath;
 use Mathematician\Integer\Adapter\Gmp;
-use Mathematician\Exception\AdapterSupportException;
 
 /**
  * Number
@@ -23,6 +23,29 @@ use Mathematician\Exception\AdapterSupportException;
  */
 abstract class Number
 {
+
+    /**
+     * Constants
+     */
+
+    /**
+	 * The GMP extension name
+     *
+     * @const string
+     */
+    const EXTENSION_GMP = 'gmp';
+
+    /**
+	 * The BC Math extension name
+     *
+     * @const string
+     */
+    const EXTENSION_BCMATH = 'bcmath';
+
+
+    /**
+     * Methods
+     */
 
     /**
      * Create an instance of a Mathematician adapter instance
@@ -63,7 +86,7 @@ abstract class Number
      */
     public static function isGmpAvailable()
     {
-        return extension_loaded('gmp');
+        return extension_loaded(static::EXTENSION_GMP);
     }
 
     /**
@@ -75,6 +98,6 @@ abstract class Number
      */
     public static function isBcMathAvailable()
     {
-        return extension_loaded('bcmath');
+        return extension_loaded(static::EXTENSION_BCMATH);
     }
 }
