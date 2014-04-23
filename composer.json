@@ -17,7 +17,7 @@
         "ext-bcmath": "*",
         "ext-gmp": "*",
         "phpunit/phpunit": "3.7.x",
-        "phpunit/php-code-coverage": "1.2.x",
+        "phpunit/php-code-coverage": "2.0.x",
         "squizlabs/php_codesniffer": "1.5.x"
     },
     "suggest": {
