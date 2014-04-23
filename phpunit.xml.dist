@@ -17,8 +17,11 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory>./src/</directory>
+            <exclude>
+                <file>./src/Mathematician/Integer/Integer.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
