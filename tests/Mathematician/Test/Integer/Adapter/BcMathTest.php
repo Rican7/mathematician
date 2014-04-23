@@ -82,6 +82,14 @@ class BcMathTest extends AbstractAdapterTest
     }
 
     /**
+     * @expectedException OutOfRangeException
+     */
+    public function testFactoryBaseDetectionOutOfRange()
+    {
+        BcMath::factory(0, 10000);
+    }
+
+    /**
      * @dataProvider bcmathProvider
      */
     public function testToString($string, $instance)
@@ -476,6 +484,22 @@ class BcMathTest extends AbstractAdapterTest
             37 => 'HTR1PR', // After base36, the chars should uppercase
             48 => '4eRCaI',
             62 => '1LY7VK',
+        );
+
+        $bc_math = BcMath::factory($decimal_integer);
+
+        foreach ($test_conversion_map as $radix => $string) {
+            $this->assertSame($string, $bc_math->toString($radix));
+        }
+    }
+
+    public function testToStringBaseConversionWithNegative()
+    {
+        $decimal_integer = '-1234567890';
+
+        $test_conversion_map = array(
+            2 => '-1001001100101100000001011010010',
+            8 => '-11145401322',
         );
 
         $bc_math = BcMath::factory($decimal_integer);
