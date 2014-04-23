@@ -638,11 +638,6 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     {
         $result = '';
 
-        // If its a negative, then add our negative sign
-        if (strpos($bit_string, '-') === 0) {
-            $result = '-';
-        }
-
         // Flip the bits
         for ($i = 0; $i < strlen($bit_string); $i++) {
             if ($bit_string[$i] === '1') {
