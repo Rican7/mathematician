@@ -12,6 +12,7 @@ namespace Mathematician\Test\Integer\Adapter;
 
 use Exception;
 use Mathematician\Integer\Adapter\BcMath;
+use Mathematician\Number;
 
 /**
  * BcMathTest
@@ -21,6 +22,17 @@ use Mathematician\Integer\Adapter\BcMath;
  */
 class BcMathTest extends AbstractAdapterTest
 {
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        if (!Number::isBcMathAvailable()) {
+            $this->markTestSkipped(
+                'The BcMath extension is not available'
+            );
+        }
+    }
 
     protected function getTestBcMathNumber()
     {

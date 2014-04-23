@@ -12,6 +12,7 @@ namespace Mathematician\Test\Integer\Adapter;
 
 use Exception;
 use Mathematician\Integer\Adapter\Gmp;
+use Mathematician\Number;
 
 /**
  * GmpTest
@@ -21,6 +22,17 @@ use Mathematician\Integer\Adapter\Gmp;
  */
 class GmpTest extends AbstractAdapterTest
 {
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        if (!Number::isGmpAvailable()) {
+            $this->markTestSkipped(
+                'The GMP extension is not available'
+            );
+        }
+    }
 
     protected function getTestGmpNumber()
     {
