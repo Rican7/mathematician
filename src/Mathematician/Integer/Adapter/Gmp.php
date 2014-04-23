@@ -144,6 +144,37 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Get the two's complement of the number, without native signed interpretation
+     *
+     * @param int $bit_length The number of bits to use in the mask
+     * @access public
+     * @return self
+     */
+    public function twosComplement($bit_length = 0)
+    {
+        if ($this->isNegative()) {
+            $abs = $this->abs();
+
+            // Get the bit length
+            $min_bit_length = strlen($abs->toString(2)) + 1;
+
+            if ($bit_length < $min_bit_length) {
+                $bit_length = $min_bit_length;
+            }
+
+            $bit_length_multiple = static::factory(2)->pow($bit_length - 1);
+
+            // Get the one's complement
+            $ones_comp = $abs->bitNot()->bitAnd($bit_length_multiple->sub(1));
+
+            // Add our leading 1's with our bit multiple and add 1
+            return $ones_comp->add($bit_length_multiple)->add(1);
+        }
+
+        return static::factory($this->toString());
+    }
+
+    /**
      * Add numbers
      *
      * @param mixed $number
