@@ -47,3 +47,10 @@ $number->bitShiftRight(2); // 25
 $big_number = Number::factory(PHP_INT_MAX)
 $big_number->pow(2)->toString(); // 85070591730234615847396907784232501249
 ```
+
+## TODO
+
+- [x] First release!
+- [ ] Implement floating point adapter
+- [ ] Cleaner cloning/serialization via magic method overrides
+- [ ] More helper methods
