@@ -217,6 +217,27 @@ class GmpTest extends AbstractAdapterTest
         $this->assertSame((string) PHP_INT_MAX, Gmp::factory(-PHP_INT_MAX)->abs()->toString());
     }
 
+    public function testTwosComplement()
+    {
+        // Positive numbers should return the same number
+        $this->assertSame('20', Gmp::factory(20)->twosComplement()->toString());
+        $this->assertSame('84', Gmp::factory(84)->twosComplement()->toString());
+        $this->assertSame('68', Gmp::factory(68)->twosComplement()->toString());
+
+        // Negative numbers should flip bits and add a 1
+        $this->assertSame('44', Gmp::factory(-20)->twosComplement()->toString());
+        $this->assertSame('172', Gmp::factory(-84)->twosComplement()->toString());
+        $this->assertSame('188', Gmp::factory(-68)->twosComplement()->toString());
+
+        // Bit length mask
+        $this->assertSame('101100', Gmp::factory(-20)->twosComplement(0)->toString(2));
+        $this->assertSame('101100', Gmp::factory(-20)->twosComplement(-100)->toString(2));
+        $this->assertSame('101100', Gmp::factory(-20)->twosComplement(2)->toString(2));
+        $this->assertSame('11101100', Gmp::factory(-20)->twosComplement(8)->toString(2));
+        $this->assertSame('1111111111101100', Gmp::factory(-20)->twosComplement(16)->toString(2));
+        $this->assertSame('111111111111111111111111101100', Gmp::factory(-20)->twosComplement(30)->toString(2));
+    }
+
     public function testAdd()
     {
         $gmp_a = Gmp::factory(100);
