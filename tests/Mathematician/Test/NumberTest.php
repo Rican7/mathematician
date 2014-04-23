@@ -21,6 +21,21 @@ use Mathematician\Number;
 class NumberTest extends AbstractMathematicianTest
 {
 
+    public function testFactory()
+    {
+        $result = Number::factory(PHP_INT_MAX);
+
+        $this->assertInternalType('object', $result);
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\AdapterSupportException
+     */
+    public function testFactoryFailsWithBadAdapter()
+    {
+        Number::factory(123.0001);
+    }
+
     public function testIsGmpAvailable()
     {
         $available = Number::isGmpAvailable();
