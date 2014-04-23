@@ -386,15 +386,9 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      */
     public function bitShiftLeft($number)
     {
-        $result = gmp_mul(
-            $this->getRawValue(),
-            gmp_pow(
-                2,
-                static::upgradeParam($number)->toString()
-            )
+        return $this->mul(
+            static::factory(2)->pow($number)
         );
-
-        return static::factory($result);
     }
 
     /**
@@ -406,15 +400,9 @@ class Gmp extends AbstractAdapter implements AdapterInterface
      */
     public function bitShiftRight($number)
     {
-        $result = gmp_div(
-            $this->getRawValue(),
-            gmp_pow(
-                2,
-                static::upgradeParam($number)->toString()
-            )
+        return $this->div(
+            static::factory(2)->pow($number)
         );
-
-        return static::factory($result);
     }
 
     /**
