@@ -11,6 +11,7 @@
 namespace Mathematician\Integer\Adapter;
 
 use Mathematician\Exception\UnsupportedNumericFormatException;
+use OutOfRangeException;
 
 /**
  * BcMath
@@ -526,7 +527,7 @@ class BcMath extends AbstractAdapter implements AdapterInterface
     {
         if ($base < 2 || $base > strlen(static::NUMERIC_ALPHABET)) {
             throw new OutOfRangeException(
-                'Given base "'. $base .'" is out of range: 2..'. strlen(static::NUMERIC_ALPHABET)
+                'Given base "'. $base .'" is outside of range: 2..'. strlen(static::NUMERIC_ALPHABET)
             );
         }
 
