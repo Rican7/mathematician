@@ -56,6 +56,31 @@ interface AdapterInterface
     public function compareTo($number);
 
     /**
+     * Check if the number is negative
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isNegative();
+
+    /**
+     * Get the absolute value
+     *
+     * @access public
+     * @return self
+     */
+    public function abs();
+
+    /**
+     * Get the two's complement of the number, without native signed interpretation
+     *
+     * @param int $bit_length The number of bits to use in the mask
+     * @access public
+     * @return self
+     */
+    public function twosComplement($bit_length = 0);
+
+    /**
      * Add numbers
      *
      * @param mixed $number
@@ -126,6 +151,59 @@ interface AdapterInterface
      * @return self
      */
     public function mod($number);
+
+    /**
+     * Bitwise "and" (&)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitAnd($number);
+
+    /**
+     * Bitwise "or" (|)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitOr($number);
+
+    /**
+     * Bitwise "xor" (^)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitXor($number);
+
+    /**
+     * Bitwise "not" (~)
+     *
+     * @access public
+     * @return self
+     */
+    public function bitNot();
+
+    /**
+     * Bitwise "shift left" (<<)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftLeft($number);
+
+    /**
+     * Bitwise "shift right" (>>)
+     *
+     * @param mixed $number
+     * @access public
+     * @return self
+     */
+    public function bitShiftRight($number);
 
 
     /**
