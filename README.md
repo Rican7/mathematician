@@ -1,5 +1,9 @@
 # Mathematician
 
+[![Build Status](https://travis-ci.org/Rican7/mathematician.svg?branch=master)](https://travis-ci.org/Rican7/mathematician)
+[![Total Downloads](https://poser.pugx.org/Rican7/mathematician/downloads.png)](https://packagist.org/packages/Rican7/mathematician)
+[![Latest Stable Version](https://poser.pugx.org/Rican7/mathematician/v/stable.png)](https://packagist.org/packages/Rican7/mathematician)
+
 Mathematician is a PHP mathematics library for simpler, more reliable math operations... even on big numbers.
 
 Face it: working with numbers in PHP is sub-par. This library aims to change that. The design goal of this library is to make it easier to work with numbers, regardless of size/precision or what extension the system has loaded. Portability and ease of use.
