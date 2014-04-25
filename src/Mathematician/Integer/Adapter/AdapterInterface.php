@@ -73,6 +73,15 @@ interface AdapterInterface
     public function isNegative();
 
     /**
+     * Check if the value is within the range of the native PHP integer type
+     *
+     * @link http://www.php.net/manual/en/language.types.integer.php
+     * @access public
+     * @return boolean
+     */
+    public function isWithinIntegerRange();
+
+    /**
      * Get the absolute value
      *
      * @access public
