@@ -218,6 +218,18 @@ class BcMathTest extends AbstractAdapterTest
         $this->assertTrue(BcMath::factory(-PHP_INT_MAX)->isNegative());
     }
 
+    public function testIsWithinIntegerRange()
+    {
+        $this->assertTrue(BcMath::factory(0)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(-PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(~PHP_INT_MAX)->isWithinIntegerRange());
+
+        $this->assertFalse(BcMath::factory('99999999999999999999999999999')->isWithinIntegerRange());
+        $this->assertFalse(BcMath::factory('18446744073709551616')->isWithinIntegerRange());
+        $this->assertFalse(BcMath::factory('-18446744073709551616')->isWithinIntegerRange());
+    }
+
     public function testAbs()
     {
         $this->assertSame('100', BcMath::factory(-100)->abs()->toString());
@@ -519,6 +531,41 @@ class BcMathTest extends AbstractAdapterTest
         foreach ($test_conversion_map as $radix => $string) {
             $this->assertSame($string, $bc_math->toString($radix));
         }
+    }
+
+    public function testToInteger()
+    {
+        $this->assertInternalType('integer', BcMath::factory(0)->toInteger());
+
+        $this->assertSame(123456789, BcMath::factory(123456789)->toInteger());
+        $this->assertSame(391, BcMath::factory(0b110000111)->toInteger());
+        $this->assertSame(255, BcMath::factory('255')->toInteger());
+
+        // Test out of range with strict off
+        $this->assertInternalType(
+            'integer',
+            BcMath::factory('99999999999999999999999999999')->toInteger(false)
+        );
+        $this->assertInternalType(
+            'integer',
+            BcMath::factory('-99999999999999999999999999999')->toInteger(false)
+        );
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeHigh()
+    {
+        BcMath::factory('99999999999999999999')->toInteger();
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeLow()
+    {
+        BcMath::factory('-99999999999999999999')->toInteger();
     }
 
     /**

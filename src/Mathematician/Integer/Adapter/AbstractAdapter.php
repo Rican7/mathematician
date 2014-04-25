@@ -86,6 +86,32 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
+     * Check if the number is negative
+     *
+     * @access public
+     * @return boolean
+     */
+    public function isNegative()
+    {
+        return ($this->compareTo(0) === -1);
+    }
+
+    /**
+     * Check if the value is within the range of the native PHP integer type
+     *
+     * @link http://www.php.net/manual/en/language.types.integer.php
+     * @access public
+     * @return boolean
+     */
+    public function isWithinIntegerRange()
+    {
+        return (
+            $this->compareTo(PHP_INT_MAX) <= 0
+            && $this->compareTo(~PHP_INT_MAX) >= 0
+        );
+    }
+
+    /**
      * Get a string representation of the number
      *
      * @access public

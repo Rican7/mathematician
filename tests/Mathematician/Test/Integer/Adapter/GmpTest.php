@@ -222,6 +222,18 @@ class GmpTest extends AbstractAdapterTest
         $this->assertTrue(Gmp::factory(-PHP_INT_MAX)->isNegative());
     }
 
+    public function testIsWithinIntegerRange()
+    {
+        $this->assertTrue(Gmp::factory(0)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(-PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(~PHP_INT_MAX)->isWithinIntegerRange());
+
+        $this->assertFalse(Gmp::factory('99999999999999999999999999999')->isWithinIntegerRange());
+        $this->assertFalse(Gmp::factory('18446744073709551616')->isWithinIntegerRange());
+        $this->assertFalse(Gmp::factory('-18446744073709551616')->isWithinIntegerRange());
+    }
+
     public function testAbs()
     {
         $this->assertSame('100', Gmp::factory(-100)->abs()->toString());
@@ -507,6 +519,41 @@ class GmpTest extends AbstractAdapterTest
         foreach ($test_conversion_map as $radix => $string) {
             $this->assertSame($string, $gmp->toString($radix));
         }
+    }
+
+    public function testToInteger()
+    {
+        $this->assertInternalType('integer', Gmp::factory(0)->toInteger());
+
+        $this->assertSame(123456789, Gmp::factory(123456789)->toInteger());
+        $this->assertSame(391, Gmp::factory(0b110000111)->toInteger());
+        $this->assertSame(255, Gmp::factory('255')->toInteger());
+
+        // Test out of range with strict off
+        $this->assertInternalType(
+            'integer',
+            Gmp::factory('99999999999999999999999999999')->toInteger(false)
+        );
+        $this->assertInternalType(
+            'integer',
+            Gmp::factory('-99999999999999999999999999999')->toInteger(false)
+        );
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeHigh()
+    {
+        Gmp::factory('99999999999999999999')->toInteger();
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeLow()
+    {
+        Gmp::factory('-99999999999999999999')->toInteger();
     }
 
     /**

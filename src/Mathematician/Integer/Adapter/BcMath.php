@@ -10,6 +10,7 @@
 
 namespace Mathematician\Integer\Adapter;
 
+use Mathematician\Exception\OutOfTypeRangeException;
 use Mathematician\Exception\UnsupportedNumericFormatException;
 use OutOfRangeException;
 
@@ -104,17 +105,6 @@ class BcMath extends AbstractAdapter implements AdapterInterface
             $this->getRawValue(),
             static::upgradeParam($number)->getRawValue()
         );
-    }
-
-    /**
-     * Check if the number is negative
-     *
-     * @access public
-     * @return boolean
-     */
-    public function isNegative()
-    {
-        return ($this->compareTo(0) === -1);
     }
 
     /**
@@ -512,6 +502,25 @@ class BcMath extends AbstractAdapter implements AdapterInterface
         }
 
         return (string) $this->raw_value;
+    }
+
+    /**
+     * Get the native PHP integer value
+     *
+     * @param bool $strict
+     * @access public
+     * @return int
+     */
+    public function toInteger($strict = true)
+    {
+        if ($strict && !$this->isWithinIntegerRange()) {
+            throw new OutOfTypeRangeException(
+                'The value "'. $this->toString() .'" is outside of the native integer range: '
+                . ~PHP_INT_MAX .'...'. PHP_INT_MAX
+            );
+        }
+
+        return (int) $this->getRawValue();
     }
 
     /**

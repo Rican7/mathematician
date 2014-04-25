@@ -47,6 +47,15 @@ interface AdapterInterface
     public function toString($radix = 10);
 
     /**
+     * Get the native PHP integer value
+     *
+     * @param bool $strict
+     * @access public
+     * @return int
+     */
+    public function toInteger($strict = true);
+
+    /**
      * Compare numbers
      *
      * @param mixed $number
