@@ -526,7 +526,7 @@ class GmpTest extends AbstractAdapterTest
         $this->assertInternalType('integer', Gmp::factory(0)->toInteger());
 
         $this->assertSame(123456789, Gmp::factory(123456789)->toInteger());
-        $this->assertSame(391, Gmp::factory(0b110000111)->toInteger());
+        $this->assertSame(391, Gmp::factory('0b110000111')->toInteger());
         $this->assertSame(255, Gmp::factory('255')->toInteger());
 
         // Test out of range with strict off

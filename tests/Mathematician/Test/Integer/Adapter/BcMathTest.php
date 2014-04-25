@@ -538,7 +538,7 @@ class BcMathTest extends AbstractAdapterTest
         $this->assertInternalType('integer', BcMath::factory(0)->toInteger());
 
         $this->assertSame(123456789, BcMath::factory(123456789)->toInteger());
-        $this->assertSame(391, BcMath::factory(0b110000111)->toInteger());
+        $this->assertSame(391, BcMath::factory('0b110000111')->toInteger());
         $this->assertSame(255, BcMath::factory('255')->toInteger());
 
         // Test out of range with strict off
