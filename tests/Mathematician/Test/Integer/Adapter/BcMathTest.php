@@ -218,6 +218,18 @@ class BcMathTest extends AbstractAdapterTest
         $this->assertTrue(BcMath::factory(-PHP_INT_MAX)->isNegative());
     }
 
+    public function testIsWithinIntegerRange()
+    {
+        $this->assertTrue(BcMath::factory(0)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(-PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(BcMath::factory(~PHP_INT_MAX)->isWithinIntegerRange());
+
+        $this->assertFalse(BcMath::factory('99999999999999999999999999999')->isWithinIntegerRange());
+        $this->assertFalse(BcMath::factory('18446744073709551616')->isWithinIntegerRange());
+        $this->assertFalse(BcMath::factory('-18446744073709551616')->isWithinIntegerRange());
+    }
+
     public function testAbs()
     {
         $this->assertSame('100', BcMath::factory(-100)->abs()->toString());

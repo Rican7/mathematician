@@ -222,6 +222,18 @@ class GmpTest extends AbstractAdapterTest
         $this->assertTrue(Gmp::factory(-PHP_INT_MAX)->isNegative());
     }
 
+    public function testIsWithinIntegerRange()
+    {
+        $this->assertTrue(Gmp::factory(0)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(-PHP_INT_MAX)->isWithinIntegerRange());
+        $this->assertTrue(Gmp::factory(~PHP_INT_MAX)->isWithinIntegerRange());
+
+        $this->assertFalse(Gmp::factory('99999999999999999999999999999')->isWithinIntegerRange());
+        $this->assertFalse(Gmp::factory('18446744073709551616')->isWithinIntegerRange());
+        $this->assertFalse(Gmp::factory('-18446744073709551616')->isWithinIntegerRange());
+    }
+
     public function testAbs()
     {
         $this->assertSame('100', Gmp::factory(-100)->abs()->toString());
