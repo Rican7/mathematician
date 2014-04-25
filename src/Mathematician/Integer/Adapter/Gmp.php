@@ -10,6 +10,7 @@
 
 namespace Mathematician\Integer\Adapter;
 
+use Gmp as NativeGmp;
 use Mathematician\Exception\InvalidNumberException;
 use Mathematician\Exception\InvalidPrecisionException;
 use Mathematician\Exception\InvalidTypeException;
@@ -99,6 +100,9 @@ class Gmp extends AbstractAdapter implements AdapterInterface, Serializable
         if (is_resource($number)
             && get_resource_type($number) == static::GMP_RESOURCE_TYPE_NAME) {
 
+            return true;
+
+        } elseif ($number instanceof NativeGmp) {
             return true;
         }
 
