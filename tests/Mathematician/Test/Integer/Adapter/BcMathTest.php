@@ -533,6 +533,41 @@ class BcMathTest extends AbstractAdapterTest
         }
     }
 
+    public function testToInteger()
+    {
+        $this->assertInternalType('integer', BcMath::factory(0)->toInteger());
+
+        $this->assertSame(123456789, BcMath::factory(123456789)->toInteger());
+        $this->assertSame(391, BcMath::factory(0b110000111)->toInteger());
+        $this->assertSame(255, BcMath::factory('255')->toInteger());
+
+        // Test out of range with strict off
+        $this->assertInternalType(
+            'integer',
+            BcMath::factory('99999999999999999999999999999')->toInteger(false)
+        );
+        $this->assertInternalType(
+            'integer',
+            BcMath::factory('-99999999999999999999999999999')->toInteger(false)
+        );
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeHigh()
+    {
+        BcMath::factory('99999999999999999999')->toInteger();
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeLow()
+    {
+        BcMath::factory('-99999999999999999999')->toInteger();
+    }
+
     /**
      * @dataProvider bcmathProvider
      */

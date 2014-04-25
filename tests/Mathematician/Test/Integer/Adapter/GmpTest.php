@@ -521,6 +521,41 @@ class GmpTest extends AbstractAdapterTest
         }
     }
 
+    public function testToInteger()
+    {
+        $this->assertInternalType('integer', Gmp::factory(0)->toInteger());
+
+        $this->assertSame(123456789, Gmp::factory(123456789)->toInteger());
+        $this->assertSame(391, Gmp::factory(0b110000111)->toInteger());
+        $this->assertSame(255, Gmp::factory('255')->toInteger());
+
+        // Test out of range with strict off
+        $this->assertInternalType(
+            'integer',
+            Gmp::factory('99999999999999999999999999999')->toInteger(false)
+        );
+        $this->assertInternalType(
+            'integer',
+            Gmp::factory('-99999999999999999999999999999')->toInteger(false)
+        );
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeHigh()
+    {
+        Gmp::factory('99999999999999999999')->toInteger();
+    }
+
+    /**
+     * @expectedException Mathematician\Exception\OutOfTypeRangeException
+     */
+    public function testToIntegerStrictFailsOutOfRangeLow()
+    {
+        Gmp::factory('-99999999999999999999')->toInteger();
+    }
+
     /**
      * @dataProvider gmpProvider
      */
