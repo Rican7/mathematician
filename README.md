@@ -8,6 +8,16 @@ Mathematician is a PHP mathematics library for simpler, more reliable math opera
 
 Face it: working with numbers in PHP is sub-par. This library aims to change that. The design goal of this library is to make it easier to work with numbers, regardless of size/precision or what extension the system has loaded. Portability and ease of use.
 
+## Why?
+
+Why create or even use a library like this? Well, working with numbers in PHP is quite the struggle.
+
+Unlike many languages (Python, Ruby, etc), when dividing an `integer` by an `integer` you get a result that is of the type: `float`. In fact, there's actually no `//` operation like there is in JavaScript to do integer division.
+
+Not only that, but what happens when you want to work with numbers that are larger than `PHP_INT_MAX`? When adding `1` to `PHP_INT_MAX`... you get a float again. Which means you instantly lose precision. Try to cast it back to an integer and you'll get a negative number (thanks overflow). Its rough... so naturally you turn to one of two extensions for working with big numbers: `bcmath` or `gmp`. Well, now your application/library is dependent on a compiled extension and is less portable, not to mention that they aren't equal in functionality (have fun with binary operations in BC Math).
+
+Anyway, I think you get the point here. This library was born out of my frustrations with the above. Hopefully this library eases the pain for you so you don't have to experience what I did. :P
+
 ## Installation
 
 1. [Get Composer](https://getcomposer.org/)
@@ -51,6 +61,6 @@ $big_number->pow(2)->toString(); // 85070591730234615847396907784232501249
 ## TODO
 
 - [x] First release!
-- [ ] Implement floating point adapter
+- [ ] Implement decimal adapter
 - [ ] Cleaner cloning/serialization via magic method overrides
 - [ ] More helper methods
