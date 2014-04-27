@@ -23,6 +23,10 @@ use Mathematician\Number;
 class BcMathTest extends AbstractAdapterTest
 {
 
+    /**
+     * Test Helpers
+     */
+
     protected function setUp()
     {
         parent::setUp();
@@ -32,6 +36,11 @@ class BcMathTest extends AbstractAdapterTest
                 'The BcMath extension is not available'
             );
         }
+    }
+
+    protected function factory($value, $radix = null)
+    {
+        return BcMath::factory($value, $radix);
     }
 
     protected function getTestBcMathNumber()
@@ -47,6 +56,11 @@ class BcMathTest extends AbstractAdapterTest
             array('4564564', BcMath::factory('4564564')),
         );
     }
+
+
+    /**
+     * Tests
+     */
 
     public function testConstructor()
     {

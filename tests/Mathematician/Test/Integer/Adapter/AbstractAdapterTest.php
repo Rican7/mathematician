@@ -23,7 +23,7 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
 {
 
     /**
-     * Providers
+     * Test Helpers
      */
 
     public function numberSystemProvider()
@@ -53,4 +53,15 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
             array(16, '0X3039'),
         );
     }
+
+    /**
+     * Get an instance of the integer adapter being tested
+     *
+     * @param mixed $value
+     * @param int $radix
+     * @abstract
+     * @access protected
+     * @return AbstractAdapter
+     */
+    abstract protected function factory($value, $radix = null);
 }
