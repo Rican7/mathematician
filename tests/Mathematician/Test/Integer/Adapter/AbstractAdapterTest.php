@@ -10,6 +10,7 @@
 
 namespace Mathematician\Test\Integer\Adapter;
 
+use Mathematician\Integer\Adapter\AbstractAdapter;
 use Mathematician\Test\AbstractMathematicianTest;
 
 /**
@@ -64,4 +65,24 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
      * @return AbstractAdapter
      */
     abstract protected function factory($value, $radix = null);
+
+    /**
+     * Tests
+     */
+
+    /**
+     * @dataProvider numberSystemProvider
+     */
+    public function testClone($radix, $value)
+    {
+        $integer = $this->factory($value, $radix);
+
+        $clone = clone $integer;
+
+        $this->assertTrue($integer instanceof AbstractAdapter);
+        $this->assertTrue($clone instanceof AbstractAdapter);
+
+        $this->assertSame($integer->getRawValue(), $clone->getRawValue());
+        $this->assertSame($integer->toString(), $clone->toString());
+    }
 }
