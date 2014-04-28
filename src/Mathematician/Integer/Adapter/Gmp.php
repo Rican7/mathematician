@@ -425,4 +425,16 @@ class Gmp extends AbstractAdapter implements AdapterInterface
 
         return gmp_intval($this->getRawValue());
     }
+
+    /**
+     * Augment the cloning process
+     *
+     * @access public
+     * @return void
+     */
+    public function __clone()
+    {
+        // Re-initialize our raw GMP resource/object
+        $this->raw_value = gmp_init($this->toString(), 10);
+    }
 }
