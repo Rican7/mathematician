@@ -23,6 +23,10 @@ use Mathematician\Number;
 class GmpTest extends AbstractAdapterTest
 {
 
+    /**
+     * Test Helpers
+     */
+
     protected function setUp()
     {
         parent::setUp();
@@ -32,6 +36,11 @@ class GmpTest extends AbstractAdapterTest
                 'The GMP extension is not available'
             );
         }
+    }
+
+    protected function factory($value, $radix = null)
+    {
+        return Gmp::factory($value, $radix);
     }
 
     protected function getTestGmpNumber()
@@ -47,6 +56,11 @@ class GmpTest extends AbstractAdapterTest
             array('4564564', Gmp::factory('4564564')),
         );
     }
+
+
+    /**
+     * Tests
+     */
 
     public function testIsGmpResource()
     {

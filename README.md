@@ -61,6 +61,6 @@ $big_number->pow(2)->toString(); // 85070591730234615847396907784232501249
 ## TODO
 
 - [x] First release!
+- [x] Cleaner cloning/serialization via magic method overrides
 - [ ] Implement decimal adapter
-- [ ] Cleaner cloning/serialization via magic method overrides
 - [ ] More helper methods

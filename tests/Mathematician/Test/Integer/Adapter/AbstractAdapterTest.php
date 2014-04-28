@@ -10,6 +10,7 @@
 
 namespace Mathematician\Test\Integer\Adapter;
 
+use Mathematician\Integer\Adapter\AbstractAdapter;
 use Mathematician\Test\AbstractMathematicianTest;
 
 /**
@@ -23,7 +24,7 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
 {
 
     /**
-     * Providers
+     * Test Helpers
      */
 
     public function numberSystemProvider()
@@ -52,5 +53,58 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
             array(16, '0x3039'),
             array(16, '0X3039'),
         );
+    }
+
+    /**
+     * Get an instance of the integer adapter being tested
+     *
+     * @param mixed $value
+     * @param int $radix
+     * @abstract
+     * @access protected
+     * @return AbstractAdapter
+     */
+    abstract protected function factory($value, $radix = null);
+
+    /**
+     * Tests
+     */
+
+    /**
+     * @dataProvider numberSystemProvider
+     */
+    public function testClone($radix, $value)
+    {
+        $integer = $this->factory($value, $radix);
+
+        $clone = clone $integer;
+
+        $this->assertTrue($integer instanceof AbstractAdapter);
+        $this->assertTrue($clone instanceof AbstractAdapter);
+
+        $this->assertNotSame($integer, $clone);
+
+        if (is_object($integer->getRawValue()) || is_resource($integer->getRawValue())) {
+            $this->assertNotSame($integer->getRawValue(), $clone->getRawValue());
+        } else {
+            $this->assertSame($integer->getRawValue(), $clone->getRawValue());
+        }
+
+        $this->assertSame($integer->toString(), $clone->toString());
+    }
+
+    /**
+     * @dataProvider numberSystemProvider
+     */
+    public function testSerialize($radix, $value)
+    {
+        $integer = $this->factory($value, $radix);
+
+        $serialized = serialize($integer);
+        $unserialized = unserialize($serialized);
+
+        $this->assertTrue($unserialized instanceof AbstractAdapter);
+
+        $this->assertSame($integer->toString(), $unserialized->toString());
     }
 }
