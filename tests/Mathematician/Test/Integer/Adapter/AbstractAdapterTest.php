@@ -82,8 +82,14 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
         $this->assertTrue($integer instanceof AbstractAdapter);
         $this->assertTrue($clone instanceof AbstractAdapter);
 
-        $this->assertEquals($integer, $clone);
-        $this->assertSame($integer->getRawValue(), $clone->getRawValue());
+        $this->assertNotSame($integer, $clone);
+
+        if (is_object($integer->getRawValue()) || is_resource($integer->getRawValue())) {
+            $this->assertNotSame($integer->getRawValue(), $clone->getRawValue());
+        } else {
+            $this->assertSame($integer->getRawValue(), $clone->getRawValue());
+        }
+
         $this->assertSame($integer->toString(), $clone->toString());
     }
 }
