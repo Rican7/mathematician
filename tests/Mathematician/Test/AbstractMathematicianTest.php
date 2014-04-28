@@ -5,7 +5,7 @@
  * @author      Trevor Suarez (Rican7)
  * @copyright   2014 Trevor Suarez
  * @license     MIT
- * @version     0.1.1
+ * @version     0.2.0
  */
 
 namespace Mathematician\Test;
