@@ -14,15 +14,17 @@ use Mathematician\Exception\InvalidNumberException;
 use Mathematician\Exception\InvalidPrecisionException;
 use Mathematician\Exception\InvalidTypeException;
 use Mathematician\Exception\OutOfTypeRangeException;
+use Serializable;
 
 /**
  * Gmp
  *
  * @uses AbstractAdapter
  * @uses AdapterInterface
+ * @uses Serializable
  * @package Mathematician\Integer\Adapter
  */
-class Gmp extends AbstractAdapter implements AdapterInterface
+class Gmp extends AbstractAdapter implements AdapterInterface, Serializable
 {
 
     /**
@@ -429,6 +431,10 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     /**
      * Augment the cloning process
      *
+     * This fixes the problem of cloning the adapter causing
+     * the raw GMP resource (object in 5.6) reference to be
+     * copied to the new object.
+     *
      * @access public
      * @return void
      */
@@ -436,5 +442,34 @@ class Gmp extends AbstractAdapter implements AdapterInterface
     {
         // Re-initialize our raw GMP resource/object
         $this->raw_value = gmp_init($this->toString(), 10);
+    }
+
+    /**
+     * Augment the serialization process
+     *
+     * This enables the serialization of the adapter, which
+     * would otherwise not be possible due to the raw value
+     * being a resource handle
+     *
+     * @access public
+     * @return string
+     */
+    public function serialize()
+    {
+        // Just return our string value
+        return $this->toString();
+    }
+
+    /**
+     * Augment the deserialization process
+     *
+     * @see self::serialize()
+     * @param string $serialized
+     * @access public
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        $this->raw_value = gmp_init($serialized, 10);
     }
 }
