@@ -92,4 +92,19 @@ abstract class AbstractAdapterTest extends AbstractMathematicianTest
 
         $this->assertSame($integer->toString(), $clone->toString());
     }
+
+    /**
+     * @dataProvider numberSystemProvider
+     */
+    public function testSerialize($radix, $value)
+    {
+        $integer = $this->factory($value, $radix);
+
+        $serialized = serialize($integer);
+        $unserialized = unserialize($serialized);
+
+        $this->assertTrue($unserialized instanceof AbstractAdapter);
+
+        $this->assertSame($integer->toString(), $unserialized->toString());
+    }
 }
