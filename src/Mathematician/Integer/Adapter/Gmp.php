@@ -59,7 +59,7 @@ class Gmp extends AbstractAdapter implements AdapterInterface, Serializable
                 'The GMP extension doesn\'t support float values.'
                 .' Attempt to build a '. get_class($this) .' instance with a float value: '. $number
             );
-        } elseif (static::isGmpResource($number)) {
+        } elseif (static::isGmpResource($number) || $number instanceof NativeGmp) {
             $this->raw_value = $number;
         } else {
             $this->raw_value = gmp_init($number, (int) $radix);
@@ -100,9 +100,6 @@ class Gmp extends AbstractAdapter implements AdapterInterface, Serializable
         if (is_resource($number)
             && get_resource_type($number) == static::GMP_RESOURCE_TYPE_NAME) {
 
-            return true;
-
-        } elseif ($number instanceof NativeGmp) {
             return true;
         }
 
