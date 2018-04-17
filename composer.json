@@ -16,14 +16,16 @@
     "require-dev": {
         "ext-bcmath": "*",
         "ext-gmp": "*",
-        "phpunit/phpunit": "3.7.x",
-        "phpunit/php-code-coverage": "2.0.x",
+        "phpunit/phpunit": "^4.8 || ^5.5 || ^6.5",
         "squizlabs/php_codesniffer": "1.5.x"
     },
     "suggest": {
         "ext-gmp": "Fast math operations with big number support (abritary precision)"
     },
     "autoload": {
-        "psr-0": { "Mathematician": "src/" }
+        "psr-4": { "Mathematician\\": "src/Mathematician" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Mathematician\\Tests\\": "tests/Mathematician" }
     }
 }

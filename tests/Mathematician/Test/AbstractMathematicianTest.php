@@ -10,7 +10,7 @@
 
 namespace Mathematician\Test;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * AbstractMathematicianTest
@@ -22,7 +22,7 @@ use PHPUnit_Framework_TestCase;
  * @abstract
  * @package Mathematician\Test
  */
-abstract class AbstractMathematicianTest extends PHPUnit_Framework_TestCase
+abstract class AbstractMathematicianTest extends TestCase
 {
 
     /**

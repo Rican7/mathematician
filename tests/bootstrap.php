@@ -14,4 +14,3 @@ error_reporting(-1);
 
 // Load our autoloader, and add our Test class namespace
 $autoloader = require(__DIR__ . '/../vendor/autoload.php');
-$autoloader->add('Mathematician\Tests', __DIR__);

@@ -52,16 +52,21 @@ class Gmp extends AbstractAdapter implements AdapterInterface, Serializable
      */
     public function __construct($number, $radix = 0)
     {
+        $matches = preg_match_all('/[0-9]/', (string) $number);
         // The PHP "gmp" extension doesn't support floats :/
         if (is_float($number)) {
             throw new InvalidTypeException(
                 'The GMP extension doesn\'t support float values.'
                 .' Attempt to build a '. get_class($this) .' instance with a float value: '. $number
             );
+        } elseif ($matches === 0) {
+            throw new InvalidNumberException(
+                'The $number is not the numeric value.'
+            );
         } elseif (static::isGmpResource($number)) {
             $this->raw_value = $number;
         } else {
-            $this->raw_value = gmp_init($number, (int) $radix);
+            $this->raw_value = gmp_init((string) $number, (int) $radix);
         }
 
         // Verify the value actually makes sense

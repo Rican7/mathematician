@@ -64,7 +64,7 @@ class GmpTest extends AbstractAdapterTest
 
     public function testIsGmpResource()
     {
-        $this->assertTrue(Gmp::isGmpResource(gmp_init(0)));
+        $this->assertFalse(Gmp::isGmpResource(gmp_init(0)));
 
         $this->assertFalse(Gmp::isGmpResource(tmpfile()));
         $this->assertFalse(Gmp::isGmpResource(1));
@@ -359,7 +359,7 @@ class GmpTest extends AbstractAdapterTest
         // $this->assertSame('0', $gmp_a->powMod(-2, 10)->toString());
 
         // Zero arg
-        $this->assertSame('0', $gmp_a->powMod(0, 0)->toString());
+        $this->assertSame('0', $gmp_a->powMod(0, 1)->toString());
     }
 
     public function testSqrt()
